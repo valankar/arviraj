@@ -1,0 +1,56 @@
+Current BTC price in USD: 3947.79
+Current BTC price in EUR: 3356.35
+Current BTC price in CHF: 3816.92
+Current BTC price in GBP: 3076.28
+Current LTC price in USD: 46.43
+Current ETH price in USD: 311.39
+
+Bitcoin Offers with USD
+Buys
+	Payment method: CLEAR_X_CHANGE
+	Amount in BTC: 0.24800000 - 0.25700000
+	Price for 1: 3876.91
+	Maximum: 996.37
+	Distance from market: 1.80%
+
+Bitcoin Offers with EUR
+Sells
+	Payment method: SEPA
+	Amount in BTC: 0.24830000 - 0.24830000
+	Price for 1: 3409.44
+	Maximum: 846.56
+	Distance from market: 1.58%
+Buys
+	Payment method: SEPA
+	Amount in BTC: 0.25000000 - 0.25000000
+	Price for 1: 3200.00
+	Maximum: 800.00
+	Distance from market: 4.66%
+
+Bitcoin Offers with GBP
+Buys
+	Payment method: FASTER_PAYMENTS
+	Amount in BTC: 0.10000000 - 0.15000000
+	Price for 1: 3068.72
+	Maximum: 460.31
+	Distance from market: 0.25%
+
+Litecoin Offers with BTC
+Sells
+	Amount in BTC: 0.05000000 - 2.00000000
+	Price for 1 in USD: 48.12
+	Maximum in USD: 7895.58
+	Distance from market: 3.64%
+
+Ethereum Offers with BTC
+Sells
+	Amount in BTC: 0.10000000 - 0.10000000
+	Price for 1 in USD: 318.15
+	Maximum in USD: 394.78
+	Distance from market: 2.17%
+
+	Amount in BTC: 0.05000000 - 2.00000000
+	Price for 1 in USD: 324.24
+	Maximum in USD: 7895.58
+	Distance from market: 4.13%
+
