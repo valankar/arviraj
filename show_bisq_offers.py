@@ -1,5 +1,5 @@
-#!/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
 #!/usr/bin/env python3
+# This creates 100 files in the current directory of the format bisq_N.txt where N is the maximum market distance percent.
 
 import requests
 import hashlib
@@ -8,11 +8,15 @@ import time
 import sys
 import os
 
-MAX_MARKET_DISTANCE_PERCENT=5
+MARKETS=('btc_usd', 'btc_eur', 'btc_chf', 'btc_gbp', 'ltc_btc', 'eth_btc')
+MARKET_DISTANCES=range(1, 101)
+DISTANCE_FILE_FORMAT='bisq_%d.txt'
 
 def get_bitcoin_average_headers():
-    pub_key = os.getenv('BITCOIN_AVERAGE_PUB_KEY') or ''
-    sec_key = os.getenv('BITCOIN_AVERAGE_SEC_KEY') or ''
+    pub_key = os.getenv('BITCOIN_AVERAGE_PUB_KEY')
+    sec_key = os.getenv('BITCOIN_AVERAGE_SEC_KEY')
+    if not pub_key or not sec_key:
+        raise(Exception('You must set BITCOIN_AVERAGE_PUB_KEY and BITCOIN_AVERAGE_SEC_KEY'))
     timestamp = int(time.time())
     payload = '{}.{}'.format(timestamp, pub_key)
     hex_hash = hmac.new(sec_key.encode(), msg=payload.encode(), digestmod=hashlib.sha256).hexdigest()
@@ -23,13 +27,13 @@ def get_bitcoin_average(from_cur, to_cur, headers):
     url = 'https://apiv2.bitcoinaverage.com/convert/global?from=%s&to=%s&amount=1' % (from_cur.upper(), to_cur.upper())
     return float(requests.get(url=url, headers=headers).json()['price'])
 
-def process_offer(offer, market_price, multiplier, sale=True):
+def process_offer(offer, market_price, distance, multiplier, sale):
     output = []
     price = float(offer['price'])
     distance_from_market_percent = ((price * multiplier) - market_price) / market_price * 100
     if not sale:
         distance_from_market_percent *= -1
-    if distance_from_market_percent > MAX_MARKET_DISTANCE_PERCENT:
+    if distance_from_market_percent > distance:
         return []
     fiat = False
     if offer['payment_method'] != 'BLOCK_CHAINS':
@@ -51,58 +55,62 @@ def process_offer(offer, market_price, multiplier, sale=True):
 def get_bisq_url(market):
     return('https://market.bisq.io/api/offers?market=%s' % market)
         
-def print_offers(title, market, market_price, multiplier=1):
-    market = market.lower()
-    r = requests.get(get_bisq_url(market))
-    new_output = []
-    offers = []
-    for offer in r.json()[market]['sells']:
-        output = process_offer(offer, market_price, multiplier, sale=True)
+def write_offers(title, bisq_market, market_price, distance, output_file, multiplier):
+    sell_offers = []
+    for offer in bisq_market['sells']:
+        output = process_offer(offer, market_price, distance, multiplier, True)
         if output:
-            offers.append(output)
-    if offers:
-        new_output.append('Sells')
-        for offer in offers:
-            new_output.append('\n'.join(offer))
-            if len(offers) > 1:
-                new_output.append('')
+            sell_offers.append(output)
 
-    offers = []
-    for offer in r.json()[market]['buys']:
-        output = process_offer(offer, market_price, multiplier, sale=False)
+    buy_offers = []
+    for offer in bisq_market['buys']:
+        output = process_offer(offer, market_price, distance, multiplier, False)
         if output:
-            offers.append(output)
-    if offers:
-        new_output.append('Buys')
-        for offer in offers:
-            new_output.append('\n'.join(offer))
-            if len(offers) > 1:
-                new_output.append('')
-    
-    if new_output:
-        print('\n%s' % title)
-        print('\n'.join(new_output))
+            buy_offers.append(output)
+
+    if sell_offers or buy_offers:
+        output_file.write('%s' % title)
+        if sell_offers:
+            output_file.write('\nSells\n')
+            output_file.write('\n\n'.join(['\n'.join(x) for x in sell_offers]))
+        if buy_offers:
+            output_file.write('\nBuys\n')
+            output_file.write('\n\n'.join(['\n'.join(x) for x in buy_offers]))
+        output_file.write('\n')
+        return True
+            
+    return False
 
         
+bitcoin_averages = {}
 headers = get_bitcoin_average_headers()
-current_btc = get_bitcoin_average('btc', 'usd', headers)
-current_eur = get_bitcoin_average('btc', 'eur', headers)
-current_chf = get_bitcoin_average('btc', 'chf', headers)
-current_gbp = get_bitcoin_average('btc', 'gbp', headers)
-current_ltc = get_bitcoin_average('ltc', 'usd', headers)
-current_eth = get_bitcoin_average('eth', 'usd', headers)
+for market in MARKETS:
+    (src, dst) = market.split('_')
+    if dst == 'btc':
+        dst = 'usd'
+    bitcoin_averages[market] = get_bitcoin_average(src, dst, headers)
 
-print('Current BTC price in USD: %.2f' % current_btc)
-print('Current BTC price in EUR: %.2f' % current_eur)
-print('Current BTC price in CHF: %.2f' % current_chf)
-print('Current BTC price in GBP: %.2f' % current_gbp)
-print('Current LTC price in USD: %.2f' % current_ltc)
-print('Current ETH price in USD: %.2f' % current_eth)
+bisq_markets = {}
+for market in MARKETS:
+    bisq_markets[market] = requests.get(get_bisq_url(market)).json()[market]
 
-print_offers('Bitcoin Offers with USD', 'btc_usd', current_btc)
-print_offers('Bitcoin Offers with EUR', 'btc_eur', current_eur)
-print_offers('Bitcoin Offers with CHF', 'btc_chf', current_chf)
-print_offers('Bitcoin Offers with GBP', 'btc_gbp', current_gbp)
-print_offers('Litecoin Offers with BTC', 'ltc_btc', current_ltc, current_btc)
-print_offers('Ethereum Offers with BTC', 'eth_btc', current_eth, current_btc)
+for distance in MARKET_DISTANCES:
+    f = open(DISTANCE_FILE_FORMAT % (distance,), 'w')
+    for market in MARKETS:
+        (src, dst) = market.split('_')
+        if dst == 'btc':
+            dst = 'usd'
+        f.write('Current %s price in %s: %.2f\n' % (src.upper(), dst.upper(), bitcoin_averages[market]))
+    f.write('\n')
+
+    for market in MARKETS:
+        multiplier = 1
+        (src, dst) = market.split('_')
+        if dst == 'btc':
+            multiplier = bitcoin_averages['btc_usd']
+        written = write_offers('%s Offers with %s' % (src.upper(), dst.upper()), bisq_markets[market], bitcoin_averages[market], distance, f, multiplier)
+        if written:
+            f.write('\n')
+        
+    f.close()
 
