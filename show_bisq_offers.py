@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+#
 # This creates 100 files in the current directory of the format bisq_N.txt where N is the maximum market distance percent.
+# You must set environment variables BITCOIN_AVERAGE_PUB_KEY and BITCOIN_AVERAGE_SEC_KEY based on an API key for bitcoinaverage.com.
 
 import requests
 import hashlib
@@ -112,5 +114,6 @@ for distance in MARKET_DISTANCES:
         if written:
             f.write('\n')
         
+    f.write('Find this useful? You can donate Bitcoin to: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1\n')
     f.close()
 
