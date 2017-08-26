@@ -45,6 +45,7 @@ def process_offer(offer, market_price, distance, multiplier, sale):
         fiat = True
     else:
         volume = offer['volume']
+    output.append('\tOffer ID: %s' % (offer['offer_id'].split('-')[0]))
     output.append('\tAmount in BTC: %s - %s' % (offer['min_amount'], volume))
     if fiat:
         output.append('\tPrice for 1: %.2f' % price)
