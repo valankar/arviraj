@@ -11,4 +11,10 @@ https://steropes.feralhosting.com/valankar/bisq_50.txt
 
 ## Donations
 
-If you would like to donate Bitcoin to support this project, my address is: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
+If you would like to donate Bitcoin to support this project, donation addresses are:
+
+BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
+
+ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC
+
+LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp
