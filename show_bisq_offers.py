@@ -114,6 +114,9 @@ for distance in MARKET_DISTANCES:
         if written:
             f.write('\n')
         
-    f.write('Find this useful? You can donate Bitcoin to: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1\n')
+    f.write('Find this useful? Donations:\n')
+    f.write('BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1\n')
+    f.write('ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC\n')
+    f.write('LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp\n')
     f.close()
 
