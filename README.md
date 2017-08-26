@@ -11,7 +11,7 @@ https://steropes.feralhosting.com/valankar/bisq_50.txt
 
 ## Donations
 
-If you would like to donate Bitcoin to support this project, donation addresses are:
+Find this useful?
 
 BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
 
