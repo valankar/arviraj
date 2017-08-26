@@ -13,13 +13,14 @@ import os
 MARKETS=('btc_usd', 'btc_eur', 'btc_chf', 'btc_gbp', 'ltc_btc', 'eth_btc')
 MARKET_DISTANCES=range(1, 101)
 DISTANCE_FILE_FORMAT='bisq_%d.txt'
+NOW=time.time()
 
 def get_bitcoin_average_headers():
     pub_key = os.getenv('BITCOIN_AVERAGE_PUB_KEY')
     sec_key = os.getenv('BITCOIN_AVERAGE_SEC_KEY')
     if not pub_key or not sec_key:
         raise(Exception('You must set BITCOIN_AVERAGE_PUB_KEY and BITCOIN_AVERAGE_SEC_KEY'))
-    timestamp = int(time.time())
+    timestamp = int(NOW)
     payload = '{}.{}'.format(timestamp, pub_key)
     hex_hash = hmac.new(sec_key.encode(), msg=payload.encode(), digestmod=hashlib.sha256).hexdigest()
     signature = '{}.{}'.format(payload, hex_hash)
@@ -114,6 +115,7 @@ for distance in MARKET_DISTANCES:
         if written:
             f.write('\n')
         
+    f.write('Last updated: %s\n' % (time.strftime('%c %Z', time.localtime(NOW))))
     f.write('Find this useful? Donations:\n')
     f.write('BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1\n')
     f.write('ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC\n')
