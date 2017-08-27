@@ -6,6 +6,7 @@
 import requests
 import hashlib
 import hmac
+import math
 import time
 import sys
 import os
@@ -30,6 +31,9 @@ def get_bitcoin_average(from_cur, to_cur, headers):
     url = 'https://apiv2.bitcoinaverage.com/convert/global?from=%s&to=%s&amount=1' % (from_cur.upper(), to_cur.upper())
     return float(requests.get(url=url, headers=headers).json()['price'])
 
+def get_fee(amount, distance):
+    return max(0.0002, 0.002 * float(amount) * math.sqrt(abs(distance)))
+    
 def process_offer(offer, market_price, distance, multiplier, sale):
     output = []
     price = float(offer['price'])
@@ -47,12 +51,16 @@ def process_offer(offer, market_price, distance, multiplier, sale):
         volume = offer['volume']
     output.append('\tOffer ID: %s' % (offer['offer_id'].split('-')[0]))
     output.append('\tAmount in BTC: %s - %s' % (offer['min_amount'], volume))
+    min_fee = get_fee(offer['min_amount'], distance_from_market_percent)
+    max_fee = get_fee(volume, distance_from_market_percent)
     if fiat:
         output.append('\tPrice for 1: %.2f' % price)
         output.append('\tMaximum: %.2f' % (price * float(volume)))
+        output.append('\tFee: %.2f - %.2f' % (min_fee * market_price, max_fee * market_price))
     else:
         output.append('\tPrice for 1 in USD: %.2f' % (price * multiplier))
         output.append('\tMaximum in USD: %.2f' % (multiplier * float(volume)))
+        output.append('\tFee in USD: %.2f - %.2f' % (min_fee * multiplier, max_fee * multiplier))
     output.append('\tDistance from market: %.2f%%' % distance_from_market_percent)
     return output
 
