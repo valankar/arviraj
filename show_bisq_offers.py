@@ -56,11 +56,11 @@ def process_offer(offer, market_price, distance, multiplier, sale):
     if fiat:
         output.append('\tPrice for 1: %.2f' % price)
         output.append('\tMaximum: %.2f' % (price * float(volume)))
-        output.append('\tFee: %.2f - %.2f' % (min_fee * market_price, max_fee * market_price))
+        # output.append('\tFee: %.2f - %.2f' % (min_fee * market_price, max_fee * market_price))
     else:
         output.append('\tPrice for 1 in USD: %.2f' % (price * multiplier))
         output.append('\tMaximum in USD: %.2f' % (multiplier * float(volume)))
-        output.append('\tFee in USD: %.2f - %.2f' % (min_fee * multiplier, max_fee * multiplier))
+        # output.append('\tFee in USD: %.2f - %.2f' % (min_fee * multiplier, max_fee * multiplier))
     output.append('\tDistance from market: %.2f%%' % distance_from_market_percent)
     return output
 
