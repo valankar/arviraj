@@ -6,7 +6,6 @@
 import requests
 import hashlib
 import hmac
-import functools
 import time
 import sys
 import os
@@ -31,12 +30,12 @@ def get_bitcoin_average(from_cur, to_cur, headers):
     url = 'https://apiv2.bitcoinaverage.com/convert/global?from=%s&to=%s&amount=1' % (from_cur.upper(), to_cur.upper())
     return float(requests.get(url=url, headers=headers).json()['price'])
 
-@functools.lru_cache(maxsize=None)
 def get_bisq_tx_fee():
     return int(requests.get(url='http://37.139.14.34:8080/getFees').json()['dataMap']['btcTxFee'])
+TX_FEE=get_bisq_tx_fee()
     
 def get_fee(amount):
-    return max(0.0002, 0.003 * float(amount)) + (3 * (get_bisq_tx_fee() * 200)/100000000.)
+    return max(0.0002, 0.003 * float(amount)) + (3 * (TX_FEE * 200)/100000000.)
     
 def get_range_or_value(first, second, format_str):
     if first == second:
