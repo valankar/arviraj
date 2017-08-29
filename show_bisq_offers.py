@@ -50,7 +50,11 @@ def process_offer(offer, market_price, distance, multiplier, sale):
     else:
         volume = offer['volume']
     output.append('\tOffer ID: %s' % (offer['offer_id'].split('-')[0]))
-    output.append('\tAmount in BTC: %s - %s' % (offer['min_amount'], volume))
+    if offer['min_amount'] == volume:
+        amount_str = '%s' % (float(offer['min_amount']),)
+    else:
+        amount_str = '%s - %s' % (float(offer['min_amount']), float(volume))
+    output.append('\tAmount in BTC: %s' % (amount_str,))
     min_fee = get_fee(offer['min_amount'], distance_from_market_percent)
     max_fee = get_fee(volume, distance_from_market_percent)
     if fiat:
