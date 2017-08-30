@@ -6,6 +6,7 @@
 import requests
 import hashlib
 import hmac
+import math
 import time
 import sys
 import os
@@ -30,12 +31,15 @@ def get_bitcoin_average(from_cur, to_cur, headers):
     url = 'https://apiv2.bitcoinaverage.com/convert/global?from=%s&to=%s&amount=1' % (from_cur.upper(), to_cur.upper())
     return float(requests.get(url=url, headers=headers).json()['price'])
 
-# def get_bisq_tx_fee():
-#     return int(requests.get(url='http://37.139.14.34:8080/getFees').json()['dataMap']['btcTxFee'])
-# TX_FEE=get_bisq_tx_fee()
+def get_bisq_tx_fee():
+    return int(requests.get(url='http://37.139.14.34:8080/getFees').json()['dataMap']['btcTxFee'])
+TX_FEE=get_bisq_tx_fee()
     
-def get_fee(amount):
-    return max(0.0002, 0.003 * float(amount))
+def get_fees(amount, distance):
+    fee = TX_FEE * 200/100000000.
+    maker = max(0.0002, 0.002 * amount * math.sqrt(distance)) + fee
+    taker = max(0.0002, 0.003 * amount) + (3 * fee)
+    return (maker, taker)
     
 def get_range_or_value(first, second, format_str):
     if first == second:
@@ -60,16 +64,16 @@ def process_offer(offer, market_price, distance, multiplier, sale):
         volume = offer['volume']
     output.append('\tOffer ID: %s' % (offer['offer_id'].split('-')[0]))
     output.append('\tAmount in BTC: %s' % (get_range_or_value(float(offer['min_amount']), float(volume), '%s')))
-    min_fee = get_fee(offer['min_amount'])
-    max_fee = get_fee(volume)
+    min_fee = get_fees(float(offer['min_amount']), abs(distance_from_market_percent))
+    max_fee = get_fees(float(volume), abs(distance_from_market_percent))
+    output.append('\tMaker fee in BTC: %s' % (get_range_or_value(min_fee[0], max_fee[0], '%f')))
+    output.append('\tTaker fee in BTC: %s' % (get_range_or_value(min_fee[1], max_fee[1], '%f')))
     if fiat:
         output.append('\tPrice for 1: %.2f' % price)
         output.append('\tMaximum: %.2f' % (price * float(volume)))
-        output.append('\tFee: %s' % (get_range_or_value(min_fee * price * float(offer['min_amount']), max_fee * price * float(volume), '%.2f')))
     else:
         output.append('\tPrice for 1 in USD: %.2f' % (price * multiplier))
         output.append('\tMaximum in USD: %.2f' % (multiplier * float(volume)))
-        output.append('\tFee in USD: %s' % (get_range_or_value(min_fee * multiplier * float(offer['min_amount']), max_fee * multiplier * float(volume), '%.2f')))
     output.append('\tDistance from market: %.2f%%' % distance_from_market_percent)
     return output
 
