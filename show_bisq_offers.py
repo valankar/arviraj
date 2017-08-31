@@ -126,7 +126,7 @@ for distance in MARKET_DISTANCES:
         if dst == 'btc':
             dst = 'usd'
         f.write('Current %s price in %s: %.2f\n' % (src.upper(), dst.upper(), bitcoin_averages[market]))
-    f.write('\n')
+    f.write('\nOffers with market distance < %d%%\n\n' % (distance,))
 
     for market in MARKETS:
         multiplier = 1
