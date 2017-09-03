@@ -14,9 +14,9 @@ import os
 DOCS="""
 Notes:
 
-Market distance is defined differently based on the offer type.
-For "Sells", a negative market distance means the offer is to sell at less than the market price.
-For "Buys", a negative market distance means the offer is to buy at greater than the market price. 
+Market distance is defined differently based on the offer type. \
+For "Sells", a negative market distance means the offer is to sell at less than the market price. \
+For "Buys", a negative market distance means the offer is to buy at greater than the market price. \
 This means that a negative (or low) distance is generally a good deal for both types.
 
 Code for this tool is available at: https://github.com/valankar/arviraj
