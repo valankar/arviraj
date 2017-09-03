@@ -1,56 +1,134 @@
-Current BTC price in USD: 3947.79
-Current BTC price in EUR: 3356.35
-Current BTC price in CHF: 3816.92
-Current BTC price in GBP: 3076.28
-Current LTC price in USD: 46.43
-Current ETH price in USD: 311.39
+Current BTC price in USD: 4609.00
+Current BTC price in EUR: 3885.36
+Current BTC price in CHF: 4446.35
+Current BTC price in GBP: 3558.61
+Current LTC price in USD: 78.65
+Current ETH price in USD: 351.20
 
-Bitcoin Offers with USD
-Buys
+Bisq offers with market distance < 5%
+
+BTC Offers with USD (Last trade price for 1: 4548.10, Distance from current market: -1.32%)
+Sells
 	Payment method: CLEAR_X_CHANGE
-	Amount in BTC: 0.24800000 - 0.25700000
-	Price for 1: 3876.91
-	Maximum: 996.37
-	Distance from market: 1.80%
+	Offer ID: jcrvlals
+	Amount in BTC: 0.15
+	Maker fee in BTC: 0.000503
+	Taker fee in BTC: 0.000690
+	Price for 1: 4700.59
+	Maximum: 705.09
+	Distance from market: 1.99%
+Buys
+	Payment method: SPECIFIC_BANKS
+	Offer ID: UcwPWumy
+	Amount in BTC: 0.3
+	Maker fee in BTC: 0.000711
+	Taker fee in BTC: 0.001140
+	Price for 1: 4660.00
+	Maximum: 1398.00
+	Distance from market: -1.11%
 
-Bitcoin Offers with EUR
+	Payment method: CLEAR_X_CHANGE
+	Offer ID: RKihTN3
+	Amount in BTC: 0.05 - 0.054
+	Maker fee in BTC: 0.000280
+	Taker fee in BTC: 0.000440
+	Price for 1: 4563.01
+	Maximum: 246.40
+	Distance from market: 1.00%
+
+BTC Offers with EUR (Last trade price for 1: 4147.90, Distance from current market: 6.76%)
 Sells
 	Payment method: SEPA
-	Amount in BTC: 0.24830000 - 0.24830000
-	Price for 1: 3409.44
-	Maximum: 846.56
-	Distance from market: 1.58%
+	Offer ID: ePafeM
+	Amount in BTC: 0.5
+	Maker fee in BTC: 0.001842
+	Taker fee in BTC: 0.001740
+	Price for 1: 4006.04
+	Maximum: 2003.02
+	Distance from market: 3.11%
+
+	Payment method: SEPA
+	Offer ID: VpyhQ
+	Amount in BTC: 0.25 - 0.5
+	Maker fee in BTC: 0.000961 - 0.001842
+	Taker fee in BTC: 0.000990 - 0.001740
+	Price for 1: 4006.04
+	Maximum: 2003.02
+	Distance from market: 3.11%
 Buys
 	Payment method: SEPA
-	Amount in BTC: 0.25000000 - 0.25000000
-	Price for 1: 3200.00
-	Maximum: 800.00
-	Distance from market: 4.66%
+	Offer ID: 73347299
+	Amount in BTC: 0.2 - 0.25
+	Maker fee in BTC: 0.000280
+	Taker fee in BTC: 0.000840 - 0.000990
+	Price for 1: 3881.58
+	Maximum: 970.40
+	Distance from market: 0.10%
 
-Bitcoin Offers with GBP
+	Payment method: SEPA
+	Offer ID: wvg4nmt8
+	Amount in BTC: 0.1
+	Maker fee in BTC: 0.000523
+	Taker fee in BTC: 0.000540
+	Price for 1: 3694.89
+	Maximum: 369.49
+	Distance from market: 4.90%
+
+	Payment method: SEPA
+	Offer ID: Rcteqa
+	Amount in BTC: 0.1 - 0.2
+	Maker fee in BTC: 0.000523 - 0.000966
+	Taker fee in BTC: 0.000540 - 0.000840
+	Price for 1: 3694.89
+	Maximum: 738.98
+	Distance from market: 4.90%
+
+BTC Offers with CHF (Last trade price for 1: 4485.08, Distance from current market: 0.87%)
+Buys
+	Payment method: NATIONAL_BANK
+	Offer ID: xzlen
+	Amount in BTC: 0.05
+	Maker fee in BTC: 0.000280
+	Taker fee in BTC: 0.000440
+	Price for 1: 4354.60
+	Maximum: 217.73
+	Distance from market: 2.06%
+
+BTC Offers with GBP (Last trade price for 1: 3672.94, Distance from current market: 3.21%)
 Buys
 	Payment method: FASTER_PAYMENTS
-	Amount in BTC: 0.10000000 - 0.15000000
-	Price for 1: 3068.72
-	Maximum: 460.31
-	Distance from market: 0.25%
+	Offer ID: 65498252
+	Amount in BTC: 0.2 - 0.25
+	Maker fee in BTC: 0.000323 - 0.000384
+	Taker fee in BTC: 0.000840 - 0.000990
+	Price for 1: 3571.73
+	Maximum: 892.93
+	Distance from market: -0.37%
 
-Litecoin Offers with BTC
+LTC Offers with BTC (Last trade price for 1 in USD: 59.92, Distance from current market: -23.82%)
 Sells
-	Amount in BTC: 0.05000000 - 2.00000000
-	Price for 1 in USD: 48.12
-	Maximum in USD: 7895.58
-	Distance from market: 3.64%
+	Offer ID: wPBxDy13
+	Amount in BTC: 0.1 - 0.6267
+	Maker fee in BTC: 0.000415 - 0.002181
+	Taker fee in BTC: 0.000540 - 0.002120
+	Price for 1 in USD: 80.86
+	Maximum in USD: 2888.46
+	Distance from market: 2.81%
 
-Ethereum Offers with BTC
-Sells
-	Amount in BTC: 0.10000000 - 0.10000000
-	Price for 1 in USD: 318.15
-	Maximum in USD: 394.78
-	Distance from market: 2.17%
+ETH Offers with BTC (Last trade price for 1 in USD: 368.34, Distance from current market: 4.88%)
 
-	Amount in BTC: 0.05000000 - 2.00000000
-	Price for 1 in USD: 324.24
-	Maximum in USD: 7895.58
-	Distance from market: 4.13%
+Last updated: Sun Sep  3 12:46:22 2017 CEST
 
+Notes:
+
+Market distance is defined differently based on the offer type.
+For "Sells", a negative market distance means the offer is to sell at less than the market price.
+For "Buys", a negative market distance means the offer is to buy at greater than the market price. 
+This means that a negative (or low) distance is generally a good deal for both types.
+
+Code for this tool is available at: https://github.com/valankar/arviraj
+
+Find this useful? Please consider donating:
+BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
+ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC
+LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp
