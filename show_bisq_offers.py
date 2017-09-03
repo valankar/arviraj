@@ -92,13 +92,28 @@ def process_offer(offer, market_price, distance, multiplier, sale):
     output.append('\tDistance from market: %.2f%%' % distance_from_market_percent)
     return output
 
+def get_human_readable_time(seconds):
+    d = int(seconds / (60 * 60 * 24))
+    h = int((seconds % (60 * 60 * 24)) / (60 * 60))
+    m = int((seconds % (60 * 60)) / 60)
+    s = seconds % 60
+    if d:
+        return '%dd' % d
+    if h:
+        return '%dh' % h
+    if m:
+        return '%dm' % m
+    return '%ds' % s
+    
 def get_last_trade(bisq_last_trade, market_price, multiplier):
     price = float(bisq_last_trade['price'])
+    age = get_human_readable_time(NOW - int(bisq_last_trade['trade_date'] / 1000))
     distance_from_market_percent = ((price * multiplier) - market_price) / market_price * 100
     if multiplier == 1:
-        text = 'Last trade price for 1: %.2f, Distance from current market: %.2f%%' % (price, distance_from_market_percent)
+        price_text = ': %.2f' % (price,)
     else:
-        text = 'Last trade price for 1 in USD: %.2f, Distance from current market: %.2f%%' % (price * multiplier, distance_from_market_percent)
+        price_text = ' in USD: %.2f' % (price * multiplier,)
+    text = 'Last trade price for 1%s, Distance from current market: %.2f%%, Age: %s' % (price_text, distance_from_market_percent, age)
     return text
 
 def write_offers(output_file, bisq_market, market_price, distance, multiplier):

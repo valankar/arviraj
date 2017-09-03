@@ -1,130 +1,118 @@
-Current BTC price in USD: 4609.00
-Current BTC price in EUR: 3885.36
-Current BTC price in CHF: 4446.35
-Current BTC price in GBP: 3558.61
-Current LTC price in USD: 78.65
-Current ETH price in USD: 351.20
+Current BTC price in USD: 4492.62
+Current BTC price in EUR: 3787.26
+Current BTC price in CHF: 4334.08
+Current BTC price in GBP: 3469.20
+Current LTC price in USD: 76.37
+Current ETH price in USD: 341.64
 
 Bisq offers with market distance < 5%
 
-BTC Offers with USD (Last trade price for 1: 4548.10, Distance from current market: -1.32%)
-Sells
-	Payment method: CLEAR_X_CHANGE
-	Offer ID: jcrvlals
-	Amount in BTC: 0.15
-	Maker fee in BTC: 0.000503
-	Taker fee in BTC: 0.000690
-	Price for 1: 4700.59
-	Maximum: 705.09
-	Distance from market: 1.99%
+BTC Offers with USD (Last trade price for 1: 4548.10, Distance from current market: 1.23%, Age: 22h)
 Buys
-	Payment method: SPECIFIC_BANKS
-	Offer ID: UcwPWumy
-	Amount in BTC: 0.3
-	Maker fee in BTC: 0.000711
-	Taker fee in BTC: 0.001140
-	Price for 1: 4660.00
-	Maximum: 1398.00
-	Distance from market: -1.11%
+	Payment method: CLEAR_X_CHANGE
+	Offer ID: twmgd
+	Amount in BTC: 0.25
+	Maker fee in BTC: 0.000320
+	Taker fee in BTC: 0.001110
+	Price for 1: 4485.71
+	Maximum: 1121.43
+	Distance from market: 0.15%
 
 	Payment method: CLEAR_X_CHANGE
 	Offer ID: RKihTN3
 	Amount in BTC: 0.05 - 0.054
-	Maker fee in BTC: 0.000280
-	Taker fee in BTC: 0.000440
-	Price for 1: 4563.01
-	Maximum: 246.40
-	Distance from market: 1.00%
+	Maker fee in BTC: 0.000320
+	Taker fee in BTC: 0.000560
+	Price for 1: 4463.28
+	Maximum: 241.02
+	Distance from market: 0.65%
 
-BTC Offers with EUR (Last trade price for 1: 4147.90, Distance from current market: 6.76%)
+BTC Offers with EUR (Last trade price for 1: 3792.55, Distance from current market: 0.14%, Age: 8m)
 Sells
 	Payment method: SEPA
-	Offer ID: ePafeM
+	Offer ID: xqimdeb
 	Amount in BTC: 0.5
-	Maker fee in BTC: 0.001842
-	Taker fee in BTC: 0.001740
-	Price for 1: 4006.04
-	Maximum: 2003.02
-	Distance from market: 3.11%
+	Maker fee in BTC: 0.000739
+	Taker fee in BTC: 0.001860
+	Price for 1: 3801.79
+	Maximum: 1900.90
+	Distance from market: 0.38%
 
 	Payment method: SEPA
 	Offer ID: VpyhQ
 	Amount in BTC: 0.25 - 0.5
-	Maker fee in BTC: 0.000961 - 0.001842
-	Taker fee in BTC: 0.000990 - 0.001740
-	Price for 1: 4006.04
-	Maximum: 2003.02
-	Distance from market: 3.11%
-Buys
-	Payment method: SEPA
-	Offer ID: 73347299
-	Amount in BTC: 0.2 - 0.25
-	Maker fee in BTC: 0.000280
-	Taker fee in BTC: 0.000840 - 0.000990
-	Price for 1: 3881.58
-	Maximum: 970.40
-	Distance from market: 0.10%
+	Maker fee in BTC: 0.001055 - 0.001991
+	Taker fee in BTC: 0.001110 - 0.001860
+	Price for 1: 3919.77
+	Maximum: 1959.88
+	Distance from market: 3.50%
 
 	Payment method: SEPA
-	Offer ID: wvg4nmt8
-	Amount in BTC: 0.1
-	Maker fee in BTC: 0.000523
-	Taker fee in BTC: 0.000540
-	Price for 1: 3694.89
-	Maximum: 369.49
-	Distance from market: 4.90%
+	Offer ID: ePafeM
+	Amount in BTC: 0.5
+	Maker fee in BTC: 0.001991
+	Taker fee in BTC: 0.001860
+	Price for 1: 3919.77
+	Maximum: 1959.88
+	Distance from market: 3.50%
+Buys
+	Payment method: SEPA
+	Offer ID: DULOUPIH
+	Amount in BTC: 0.2 - 0.3
+	Maker fee in BTC: 0.000953 - 0.001370
+	Taker fee in BTC: 0.000960 - 0.001260
+	Price for 1: 3622.93
+	Maximum: 1086.88
+	Distance from market: 4.34%
 
 	Payment method: SEPA
 	Offer ID: Rcteqa
 	Amount in BTC: 0.1 - 0.2
-	Maker fee in BTC: 0.000523 - 0.000966
-	Taker fee in BTC: 0.000540 - 0.000840
-	Price for 1: 3694.89
-	Maximum: 738.98
-	Distance from market: 4.90%
+	Maker fee in BTC: 0.000546 - 0.000972
+	Taker fee in BTC: 0.000660 - 0.000960
+	Price for 1: 3615.32
+	Maximum: 723.06
+	Distance from market: 4.54%
 
-BTC Offers with CHF (Last trade price for 1: 4485.08, Distance from current market: 0.87%)
+	Payment method: SEPA
+	Offer ID: wvg4nmt8
+	Amount in BTC: 0.1
+	Maker fee in BTC: 0.000546
+	Taker fee in BTC: 0.000660
+	Price for 1: 3615.32
+	Maximum: 361.53
+	Distance from market: 4.54%
+
+BTC Offers with CHF (Last trade price for 1: 4485.08, Distance from current market: 3.48%, Age: 1d)
 Buys
 	Payment method: NATIONAL_BANK
 	Offer ID: xzlen
 	Amount in BTC: 0.05
-	Maker fee in BTC: 0.000280
-	Taker fee in BTC: 0.000440
-	Price for 1: 4354.60
-	Maximum: 217.73
-	Distance from market: 2.06%
+	Maker fee in BTC: 0.000320
+	Taker fee in BTC: 0.000560
+	Price for 1: 4247.73
+	Maximum: 212.39
+	Distance from market: 1.99%
 
-BTC Offers with GBP (Last trade price for 1: 3672.94, Distance from current market: 3.21%)
-Buys
-	Payment method: FASTER_PAYMENTS
-	Offer ID: 65498252
-	Amount in BTC: 0.2 - 0.25
-	Maker fee in BTC: 0.000323 - 0.000384
-	Taker fee in BTC: 0.000840 - 0.000990
-	Price for 1: 3571.73
-	Maximum: 892.93
-	Distance from market: -0.37%
+BTC Offers with GBP (Last trade price for 1: 3631.22, Distance from current market: 4.67%, Age: 26m)
 
-LTC Offers with BTC (Last trade price for 1 in USD: 59.92, Distance from current market: -23.82%)
+LTC Offers with BTC (Last trade price for 1 in USD: 58.40, Distance from current market: -23.52%, Age: 6d)
 Sells
 	Offer ID: wPBxDy13
 	Amount in BTC: 0.1 - 0.6267
-	Maker fee in BTC: 0.000415 - 0.002181
-	Taker fee in BTC: 0.000540 - 0.002120
-	Price for 1 in USD: 80.86
-	Maximum in USD: 2888.46
-	Distance from market: 2.81%
+	Maker fee in BTC: 0.000453 - 0.002210
+	Taker fee in BTC: 0.000660 - 0.002240
+	Price for 1 in USD: 78.49
+	Maximum in USD: 2815.52
+	Distance from market: 2.78%
 
-ETH Offers with BTC (Last trade price for 1 in USD: 368.34, Distance from current market: 4.88%)
+ETH Offers with BTC (Last trade price for 1 in USD: 359.04, Distance from current market: 5.09%, Age: 10d)
 
-Last updated: Sun Sep  3 12:46:22 2017 CEST
+Last updated: Sun Sep  3 17:17:40 2017 CEST
 
 Notes:
 
-Market distance is defined differently based on the offer type.
-For "Sells", a negative market distance means the offer is to sell at less than the market price.
-For "Buys", a negative market distance means the offer is to buy at greater than the market price. 
-This means that a negative (or low) distance is generally a good deal for both types.
+Market distance is defined differently based on the offer type. For "Sells", a negative market distance means the offer is to sell at less than the market price. For "Buys", a negative market distance means the offer is to buy at greater than the market price. This means that a negative (or low) distance is generally a good deal for both types.
 
 Code for this tool is available at: https://github.com/valankar/arviraj
 
