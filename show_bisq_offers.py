@@ -11,6 +11,21 @@ import time
 import sys
 import os
 
+DOCS="""
+Notes:
+
+Market distance is defined differently based on the offer type.
+For "Sells", a negative market distance means the offer is to sell at less than the market price.
+For "Buys", a negative market distance means the offer is to buy at greater than the market price. 
+This means that a negative (or low) distance is generally a good deal for both types.
+
+Code for this tool is available at: https://github.com/valankar/arviraj
+
+Find this useful? Please consider donating:
+BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
+ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC
+LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp
+"""
 MARKETS=('btc_usd', 'btc_eur', 'btc_chf', 'btc_gbp', 'ltc_btc', 'eth_btc')
 MARKET_DISTANCES=range(1, 101)
 DISTANCE_FILE_FORMAT='bisq_%d.txt'
@@ -77,10 +92,16 @@ def process_offer(offer, market_price, distance, multiplier, sale):
     output.append('\tDistance from market: %.2f%%' % distance_from_market_percent)
     return output
 
-def get_bisq_url(market):
-    return('https://market.bisq.io/api/offers?market=%s' % market)
-        
-def write_offers(title, bisq_market, market_price, distance, output_file, multiplier):
+def get_last_trade(bisq_last_trade, market_price, multiplier):
+    price = float(bisq_last_trade['price'])
+    distance_from_market_percent = ((price * multiplier) - market_price) / market_price * 100
+    if multiplier == 1:
+        text = 'Last trade price for 1: %.2f, Distance from current market: %.2f%%' % (price, distance_from_market_percent)
+    else:
+        text = 'Last trade price for 1 in USD: %.2f, Distance from current market: %.2f%%' % (price * multiplier, distance_from_market_percent)
+    return text
+
+def write_offers(output_file, bisq_market, market_price, distance, multiplier):
     sell_offers = []
     for offer in bisq_market['sells']:
         output = process_offer(offer, market_price, distance, multiplier, True)
@@ -94,19 +115,21 @@ def write_offers(title, bisq_market, market_price, distance, output_file, multip
             buy_offers.append(output)
 
     if sell_offers or buy_offers:
-        output_file.write('%s' % title)
         if sell_offers:
             output_file.write('\nSells\n')
             output_file.write('\n\n'.join(['\n'.join(x) for x in sell_offers]))
         if buy_offers:
             output_file.write('\nBuys\n')
             output_file.write('\n\n'.join(['\n'.join(x) for x in buy_offers]))
-        output_file.write('\n')
-        return True
-            
-    return False
 
-        
+    output_file.write('\n')
+
+def get_bisq_market_url(market):
+    return('https://market.bisq.io/api/offers?market=%s' % (market,))
+
+def get_bisq_last_trade_url(market):
+    return('https://market.bisq.io/api/trades?market=%s&limit=1' % (market,))
+
 bitcoin_averages = {}
 headers = get_bitcoin_average_headers()
 for market in MARKETS:
@@ -116,8 +139,10 @@ for market in MARKETS:
     bitcoin_averages[market] = get_bitcoin_average(src, dst, headers)
 
 bisq_markets = {}
+bisq_last_trades = {}
 for market in MARKETS:
-    bisq_markets[market] = requests.get(get_bisq_url(market)).json()[market]
+    bisq_markets[market] = requests.get(get_bisq_market_url(market)).json()[market]
+    bisq_last_trades[market] = requests.get(get_bisq_last_trade_url(market)).json()[0]
 
 for distance in MARKET_DISTANCES:
     f = open(DISTANCE_FILE_FORMAT % (distance,), 'w')
@@ -126,21 +151,19 @@ for distance in MARKET_DISTANCES:
         if dst == 'btc':
             dst = 'usd'
         f.write('Current %s price in %s: %.2f\n' % (src.upper(), dst.upper(), bitcoin_averages[market]))
-    f.write('\nOffers with market distance < %d%%\n\n' % (distance,))
+    f.write('\nBisq offers with market distance < %d%%\n\n' % (distance,))
 
     for market in MARKETS:
         multiplier = 1
         (src, dst) = market.split('_')
         if dst == 'btc':
             multiplier = bitcoin_averages['btc_usd']
-        written = write_offers('%s Offers with %s' % (src.upper(), dst.upper()), bisq_markets[market], bitcoin_averages[market], distance, f, multiplier)
-        if written:
-            f.write('\n')
+        last_trade = get_last_trade(bisq_last_trades[market], bitcoin_averages[market], multiplier)
+        f.write('%s Offers with %s (%s)' % (src.upper(), dst.upper(), last_trade))
+        write_offers(f, bisq_markets[market], bitcoin_averages[market], distance, multiplier)
+        f.write('\n')
         
     f.write('Last updated: %s\n' % (time.strftime('%c %Z', time.localtime(NOW))))
-    f.write('Find this useful? Donations:\n')
-    f.write('BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1\n')
-    f.write('ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC\n')
-    f.write('LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp\n')
+    f.writelines(DOCS)
     f.close()
 
