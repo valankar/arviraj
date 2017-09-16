@@ -10,6 +10,9 @@ import math
 import time
 import sys
 import os
+import pickle
+import smtplib
+from email.mime.text import MIMEText
 
 DOCS="""
 Notes:
@@ -30,7 +33,49 @@ MARKETS=('btc_usd', 'btc_eur', 'btc_chf', 'btc_gbp', 'ltc_btc', 'eth_btc')
 MARKET_DISTANCES=range(1, 101)
 DISTANCE_FILE_FORMAT='bisq_%d.txt'
 NOW=time.time()
+NOTIFICATION_STATE='notification.state'
+NOTIFICATION_FROM='foo@foo.com'
+NOTIFICATION_SUBJECT='Good Bisq Offer'
+SMTP_SERVER='localhost'
+NOTIFICATIONS=(
+    # { 'type': 'sell', 'payment_method': 'US_POSTAL_MONEY_ORDER', 'distance': 1, 'email': 'foo@foo.com' },
+)
+SENT_NOTIFICATIONS={}
 
+def send_notification(output, offer_id, payment_method, distance_from_market_percent, sale):
+    for criteria in NOTIFICATIONS:
+        if criteria['type'] == 'sell' and not sale:
+            continue
+        if criteria['payment_method'] != payment_method:
+            continue
+        if criteria['distance'] < distance_from_market_percent:
+            continue
+        sent_email = (offer_id, criteria['email'])
+        if sent_email in SENT_NOTIFICATIONS:
+            continue
+        SENT_NOTIFICATIONS[sent_email] = True
+        msg = MIMEText('\n'.join(output))
+        msg['Subject'] = NOTIFICATION_SUBJECT
+        msg['From'] = NOTIFICATION_FROM
+        msg['To'] = criteria['email']
+        try:
+            s = smtplib.SMTP(SMTP_SERVER)
+            s.sendmail(NOTIFICATION_FROM, [criteria['email']], msg.as_string())
+            s.quit()
+        except:
+            pass
+
+def load_notification_state():
+    try:
+        with open(NOTIFICATION_STATE, 'rb') as f:
+            return pickle.load(f)
+    except:
+        return {}
+
+def save_notification_state():
+    with open(NOTIFICATION_STATE, 'wb') as f:
+        pickle.dump(SENT_NOTIFICATIONS, f)
+      
 def get_bitcoin_average_headers():
     pub_key = os.getenv('BITCOIN_AVERAGE_PUB_KEY')
     sec_key = os.getenv('BITCOIN_AVERAGE_SEC_KEY')
@@ -90,8 +135,9 @@ def process_offer(offer, market_price, distance, multiplier, sale):
         output.append('\tPrice for 1 in USD: %.2f' % (price * multiplier))
         output.append('\tMaximum in USD: %.2f' % (multiplier * float(volume)))
     output.append('\tDistance from market: %.2f%%' % distance_from_market_percent)
+    send_notification(output, offer['offer_id'], offer['payment_method'], distance_from_market_percent, sale)
     return output
-
+    
 def get_human_readable_time(seconds):
     d = int(seconds / (60 * 60 * 24))
     h = int((seconds % (60 * 60 * 24)) / (60 * 60))
@@ -159,6 +205,8 @@ for market in MARKETS:
     bisq_markets[market] = requests.get(get_bisq_market_url(market)).json()[market]
     bisq_last_trades[market] = requests.get(get_bisq_last_trade_url(market)).json()[0]
 
+SENT_NOTIFICATIONS = load_notification_state()
+
 for distance in MARKET_DISTANCES:
     f = open(DISTANCE_FILE_FORMAT % (distance,), 'w')
     for market in MARKETS:
@@ -182,3 +230,4 @@ for distance in MARKET_DISTANCES:
     f.writelines(DOCS)
     f.close()
 
+save_notification_state()
