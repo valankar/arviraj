@@ -1,0 +1,22 @@
+{
+	"markets": [ "btc_usd", "btc_eur", "btc_chf", "btc_gbp", "ltc_btc", "eth_btc" ],
+	"distance_file_format": "bisq_%d.txt",
+	"notification_state_file": "notification_state.json",
+	"notification_from": "foo@foo.com",
+	"notification_subject": "Good Bisq Offer",
+	"smtp_server": "",
+	"notifications": [
+		{
+			"type": "buy",
+			"payment_method": "CLEAR_X_CHANGE",
+			"distance": 1,
+			"email": "foo@foo.com"
+		},
+		{
+			"type": "sell",
+			"payment_method": "CHASE_QUICK_PAY",
+			"distance": 1,
+			"email": "foo@foo.com"
+		}
+	]
+}

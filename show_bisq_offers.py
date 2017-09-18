@@ -2,15 +2,16 @@
 #
 # This creates 100 files in the current directory of the format bisq_N.txt where N is the maximum market distance percent.
 # You must set environment variables BITCOIN_AVERAGE_PUB_KEY and BITCOIN_AVERAGE_SEC_KEY based on an API key for bitcoinaverage.com.
+# You must pass a config file as the first argument.
 
 import requests
 import hashlib
 import hmac
+import json
 import math
 import time
 import sys
 import os
-import pickle
 import smtplib
 from email.mime.text import MIMEText
 
@@ -29,52 +30,49 @@ BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
 ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC
 LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp
 """
-MARKETS=('btc_usd', 'btc_eur', 'btc_chf', 'btc_gbp', 'ltc_btc', 'eth_btc')
+CONFIG={}
 MARKET_DISTANCES=range(1, 101)
-DISTANCE_FILE_FORMAT='bisq_%d.txt'
 NOW=time.time()
-NOTIFICATION_STATE='notification.state'
-NOTIFICATION_FROM='foo@foo.com'
-NOTIFICATION_SUBJECT='Good Bisq Offer'
-SMTP_SERVER='localhost'
-NOTIFICATIONS=(
-    # { 'type': 'sell', 'payment_method': 'US_POSTAL_MONEY_ORDER', 'distance': 1, 'email': 'foo@foo.com' },
-)
-SENT_NOTIFICATIONS={}
 
 def send_notification(output, offer_id, payment_method, distance_from_market_percent, sale):
-    for criteria in NOTIFICATIONS:
+    global CONFIG
+    if not CONFIG['smtp_server']:
+        return
+    for criteria in CONFIG['notifications']:
         if criteria['type'] == 'sell' and not sale:
             continue
         if criteria['payment_method'] != payment_method:
             continue
         if criteria['distance'] < distance_from_market_percent:
             continue
-        sent_email = (offer_id, criteria['email'])
-        if sent_email in SENT_NOTIFICATIONS:
+        sent_email = offer_id + ' ' + criteria['email']
+        if sent_email in CONFIG['sent_notifications']:
             continue
-        SENT_NOTIFICATIONS[sent_email] = True
+        CONFIG['sent_notifications'][sent_email] = True
         msg = MIMEText('\n'.join(output))
-        msg['Subject'] = NOTIFICATION_SUBJECT
-        msg['From'] = NOTIFICATION_FROM
+        msg['Subject'] = CONFIG['notification_subject']
+        msg['From'] = CONFIG['notification_from']
         msg['To'] = criteria['email']
         try:
-            s = smtplib.SMTP(SMTP_SERVER)
-            s.sendmail(NOTIFICATION_FROM, [criteria['email']], msg.as_string())
+            s = smtplib.SMTP(CONFIG['smtp_server'])
+            s.sendmail(CONFIG['notification_from'], [criteria['email']], msg.as_string())
             s.quit()
         except:
             pass
 
-def load_notification_state():
+def load_config():
+    global CONFIG
+    with open(sys.argv[1]) as config_file:
+        CONFIG = json.load(config_file)
     try:
-        with open(NOTIFICATION_STATE, 'rb') as f:
-            return pickle.load(f)
+        with open(CONFIG['notification_state_file']) as f:
+            CONFIG['sent_notifications'] = json.load(f)
     except:
-        return {}
+        CONFIG['sent_notifications'] = {}
 
 def save_notification_state():
-    with open(NOTIFICATION_STATE, 'wb') as f:
-        pickle.dump(SENT_NOTIFICATIONS, f)
+    with open(CONFIG['notification_state_file'], 'w') as f:
+        json.dump(CONFIG['sent_notifications'], f)
       
 def get_bitcoin_average_headers():
     pub_key = os.getenv('BITCOIN_AVERAGE_PUB_KEY')
@@ -191,9 +189,11 @@ def get_bisq_market_url(market):
 def get_bisq_last_trade_url(market):
     return('https://market.bisq.io/api/trades?market=%s&limit=1' % (market,))
 
+
+load_config()
 bitcoin_averages = {}
 headers = get_bitcoin_average_headers()
-for market in MARKETS:
+for market in CONFIG['markets']:
     (src, dst) = market.split('_')
     if dst == 'btc':
         dst = 'usd'
@@ -201,22 +201,20 @@ for market in MARKETS:
 
 bisq_markets = {}
 bisq_last_trades = {}
-for market in MARKETS:
+for market in CONFIG['markets']:
     bisq_markets[market] = requests.get(get_bisq_market_url(market)).json()[market]
     bisq_last_trades[market] = requests.get(get_bisq_last_trade_url(market)).json()[0]
 
-SENT_NOTIFICATIONS = load_notification_state()
-
 for distance in MARKET_DISTANCES:
-    f = open(DISTANCE_FILE_FORMAT % (distance,), 'w')
-    for market in MARKETS:
+    f = open(CONFIG['distance_file_format'] % (distance,), 'w')
+    for market in CONFIG['markets']:
         (src, dst) = market.split('_')
         if dst == 'btc':
             dst = 'usd'
         f.write('Current %s price in %s: %.2f\n' % (src.upper(), dst.upper(), bitcoin_averages[market]))
     f.write('\nBisq offers with market distance < %d%%\n\n' % (distance,))
 
-    for market in MARKETS:
+    for market in CONFIG['markets']:
         multiplier = 1
         (src, dst) = market.split('_')
         if dst == 'btc':
