@@ -72,7 +72,7 @@ def load_config():
 
 def save_notification_state():
     with open(CONFIG['notification_state_file'], 'w') as f:
-        json.dump(CONFIG['sent_notifications'], f)
+        json.dump(CONFIG['sent_notifications'], f, indent=2, sort_keys=True)
       
 def get_bitcoin_average_headers():
     pub_key = os.getenv('BITCOIN_AVERAGE_PUB_KEY')
