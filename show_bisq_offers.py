@@ -55,7 +55,7 @@ def send_twitter_notification(output, offer_id, criteria):
         condensed.append(re.sub(r'\s+', ' ', line.strip()))
     tweet = '\n'.join(condensed)[:140]
     try:
-        api.PostUpdate(tweet)
+        api.PostUpdate(tweet, verify_status_length=False)
     except:
         pass
 
