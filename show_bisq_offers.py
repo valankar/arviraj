@@ -12,7 +12,9 @@ import math
 import time
 import sys
 import os
+import re
 import smtplib
+import twitter
 from email.mime.text import MIMEText
 
 DOCS="""
@@ -34,31 +36,60 @@ CONFIG={}
 MARKET_DISTANCES=range(1, 101)
 NOW=time.time()
 
+
+def send_twitter_notification(output, offer_id, criteria):
+    global CONFIG
+    sent = offer_id + ' twitter ' + criteria['consumer_key']
+    if sent in CONFIG['sent_notifications']:
+       return
+    CONFIG['sent_notifications'][sent] = True
+    api = twitter.Api(consumer_key=criteria['consumer_key'],
+                      consumer_secret=criteria['consumer_secret'],
+                      access_token_key=criteria['access_token'],
+                      access_token_secret=criteria['access_token_secret'])
+    condensed = [criteria['type'].upper()]
+    for line in output:
+        if 'fee' in line:
+            continue
+        line = line.replace(' from market', '')
+        condensed.append(re.sub(r'\s+', ' ', line.strip()))
+    tweet = '\n'.join(condensed)[:140]
+    try:
+        api.PostUpdate(tweet)
+    except:
+        pass
+
+def send_email_notification(output, offer_id, criteria):
+    global CONFIG
+    sent = offer_id + ' email ' + criteria['email']
+    if sent in CONFIG['sent_notifications']:
+        return
+    CONFIG['sent_notifications'][sent] = True
+    msg = MIMEText('\n'.join(output))
+    msg['Subject'] = criteria['subject']
+    msg['From'] = criteria['from']
+    msg['To'] = criteria['email']
+    try:
+        s = smtplib.SMTP(criteria['smtp_server'])
+        s.sendmail(criteria['from'], [criteria['email']], msg.as_string())
+        s.quit()
+    except:
+        pass
+
 def send_notification(output, offer_id, payment_method, distance_from_market_percent, sale):
     global CONFIG
-    if not CONFIG['smtp_server']:
-        return
     for criteria in CONFIG['notifications']:
         if criteria['type'] == 'sell' and not sale:
             continue
-        if criteria['payment_method'] != payment_method:
+        if payment_method not in criteria['payment_method']:
             continue
         if criteria['distance'] < distance_from_market_percent:
             continue
-        sent_email = offer_id + ' ' + criteria['email']
-        if sent_email in CONFIG['sent_notifications']:
-            continue
-        CONFIG['sent_notifications'][sent_email] = True
-        msg = MIMEText('\n'.join(output))
-        msg['Subject'] = CONFIG['notification_subject']
-        msg['From'] = CONFIG['notification_from']
-        msg['To'] = criteria['email']
-        try:
-            s = smtplib.SMTP(CONFIG['smtp_server'])
-            s.sendmail(CONFIG['notification_from'], [criteria['email']], msg.as_string())
-            s.quit()
-        except:
-            pass
+        method = criteria['notification_method']
+        if method == 'email':
+            send_email_notification(output, offer_id, criteria)
+        elif method == 'twitter':
+            send_twitter_notification(output, offer_id, criteria)
 
 def load_config():
     global CONFIG
