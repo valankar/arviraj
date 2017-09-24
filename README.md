@@ -9,6 +9,10 @@ You can limit to maximum market distances by adding a '_N' to the URL, such as:
 
 https://steropes.feralhosting.com/valankar/bisq_50.txt
 
+You can see an example of Twitter notifications at:
+
+https://twitter.com/BisqArviraj
+
 ## Donations
 
 Find this useful?
