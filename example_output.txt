@@ -1,114 +1,229 @@
-Current BTC price in USD: 4492.62
-Current BTC price in EUR: 3787.26
-Current BTC price in CHF: 4334.08
-Current BTC price in GBP: 3469.20
-Current LTC price in USD: 76.37
-Current ETH price in USD: 341.64
+Current BTC price in USD: 3951.61
+Current BTC price in EUR: 3351.14
+Current BTC price in CHF: 3842.14
+Current BTC price in GBP: 2940.51
+Current LTC price in USD: 53.45
+Current ETH price in USD: 292.06
 
 Bisq offers with market distance < 5%
 
-BTC Offers with USD (Last trade price for 1: 4548.10, Distance from current market: 1.23%, Age: 22h)
+BTC Offers with USD (Last trade (ID: XDCCXY) price for 1: 3943.47, Distance from current market: -0.21%, Age: 11h)
+Sells
+	Payment method: CLEAR_X_CHANGE
+	Offer ID: YkKjT
+	Amount: 0.25 BTC
+	Maker fee: 0.000558 BTC
+	Taker fee: 0.001470 BTC
+	Price for 1: 3967.57 USD
+	Maximum: 991.89 USD
+	Distance from market: 0.40%
+
+	Payment method: CLEAR_X_CHANGE
+	Offer ID: 762486
+	Amount: 0.2 BTC
+	Maker fee: 0.000620 BTC
+	Taker fee: 0.001320 BTC
+	Price for 1: 3987.31 USD
+	Maximum: 797.46 USD
+	Distance from market: 0.90%
+
+	Payment method: CLEAR_X_CHANGE
+	Offer ID: bivvcmo
+	Amount: 0.142 BTC
+	Maker fee: 0.000770 BTC
+	Taker fee: 0.001146 BTC
+	Price for 1: 4089.31 USD
+	Maximum: 580.68 USD
+	Distance from market: 3.48%
 Buys
 	Payment method: CLEAR_X_CHANGE
-	Offer ID: twmgd
-	Amount in BTC: 0.25
-	Maker fee in BTC: 0.000320
-	Taker fee in BTC: 0.001110
-	Price for 1: 4485.71
-	Maximum: 1121.43
-	Distance from market: 0.15%
+	Offer ID: TVLQILHP
+	Amount: 0.25 - 0.5 BTC
+	Maker fee: 0.000440 - 0.000454 BTC
+	Taker fee: 0.001470 - 0.002220 BTC
+	Price for 1: 3949.80 USD
+	Maximum: 1974.90 USD
+	Distance from market: 0.05%
 
 	Payment method: CLEAR_X_CHANGE
-	Offer ID: RKihTN3
-	Amount in BTC: 0.05 - 0.054
-	Maker fee in BTC: 0.000320
-	Taker fee in BTC: 0.000560
-	Price for 1: 4463.28
-	Maximum: 241.02
-	Distance from market: 0.65%
+	Offer ID: 9399342
+	Amount: 0.25 - 0.5 BTC
+	Maker fee: 0.001251 - 0.002263 BTC
+	Taker fee: 0.001470 - 0.002220 BTC
+	Price for 1: 3789.92 USD
+	Maximum: 1894.96 USD
+	Distance from market: 4.09%
 
-BTC Offers with EUR (Last trade price for 1: 3792.55, Distance from current market: 0.14%, Age: 8m)
+BTC Offers with EUR (Last trade (ID: IOMP6TG) price for 1: 3300.33, Distance from current market: -1.52%, Age: 21h)
 Sells
 	Payment method: SEPA
-	Offer ID: xqimdeb
-	Amount in BTC: 0.5
-	Maker fee in BTC: 0.000739
-	Taker fee in BTC: 0.001860
-	Price for 1: 3801.79
-	Maximum: 1900.90
-	Distance from market: 0.38%
-
-	Payment method: SEPA
-	Offer ID: VpyhQ
-	Amount in BTC: 0.25 - 0.5
-	Maker fee in BTC: 0.001055 - 0.001991
-	Taker fee in BTC: 0.001110 - 0.001860
-	Price for 1: 3919.77
-	Maximum: 1959.88
-	Distance from market: 3.50%
-
-	Payment method: SEPA
-	Offer ID: ePafeM
-	Amount in BTC: 0.5
-	Maker fee in BTC: 0.001991
-	Taker fee in BTC: 0.001860
-	Price for 1: 3919.77
-	Maximum: 1959.88
-	Distance from market: 3.50%
+	Offer ID: ZJDmVcWi
+	Amount: 0.2 - 0.5 BTC
+	Maker fee: 0.000723 - 0.001447 BTC
+	Taker fee: 0.001320 - 0.002220 BTC
+	Price for 1: 3400.00 EUR
+	Maximum: 1700.00 EUR
+	Distance from market: 1.46%
 Buys
 	Payment method: SEPA
-	Offer ID: DULOUPIH
-	Amount in BTC: 0.2 - 0.3
-	Maker fee in BTC: 0.000953 - 0.001370
-	Taker fee in BTC: 0.000960 - 0.001260
-	Price for 1: 3622.93
-	Maximum: 1086.88
-	Distance from market: 4.34%
+	Offer ID: 29199
+	Amount: 0.2 BTC
+	Maker fee: 0.000707 BTC
+	Taker fee: 0.001320 BTC
+	Price for 1: 3305.38 EUR
+	Maximum: 661.08 EUR
+	Distance from market: 1.37%
 
 	Payment method: SEPA
-	Offer ID: Rcteqa
-	Amount in BTC: 0.1 - 0.2
-	Maker fee in BTC: 0.000546 - 0.000972
-	Taker fee in BTC: 0.000660 - 0.000960
-	Price for 1: 3615.32
-	Maximum: 723.06
-	Distance from market: 4.54%
+	Offer ID: 2535247
+	Amount: 0.4 - 0.5 BTC
+	Maker fee: 0.001593 - 0.001931 BTC
+	Taker fee: 0.001920 - 0.002220 BTC
+	Price for 1: 3255.30 EUR
+	Maximum: 1627.65 EUR
+	Distance from market: 2.86%
 
 	Payment method: SEPA
-	Offer ID: wvg4nmt8
-	Amount in BTC: 0.1
-	Maker fee in BTC: 0.000546
-	Taker fee in BTC: 0.000660
-	Price for 1: 3615.32
-	Maximum: 361.53
-	Distance from market: 4.54%
+	Offer ID: xlmcasby
+	Amount: 0.5 BTC
+	Maker fee: 0.001931 BTC
+	Taker fee: 0.002220 BTC
+	Price for 1: 3255.30 EUR
+	Maximum: 1627.65 EUR
+	Distance from market: 2.86%
 
-BTC Offers with CHF (Last trade price for 1: 4485.08, Distance from current market: 3.48%, Age: 1d)
+	Payment method: SEPA
+	Offer ID: SCx6q34b
+	Amount: 0.2 - 0.5 BTC
+	Maker fee: 0.000916 - 0.001931 BTC
+	Taker fee: 0.001320 - 0.002220 BTC
+	Price for 1: 3255.30 EUR
+	Maximum: 1627.65 EUR
+	Distance from market: 2.86%
+
+	Payment method: SEPA
+	Offer ID: 47iawxk
+	Amount: 0.01 - 0.5 BTC
+	Maker fee: 0.000440 - 0.002072 BTC
+	Taker fee: 0.000920 - 0.002220 BTC
+	Price for 1: 3238.61 EUR
+	Maximum: 1619.30 EUR
+	Distance from market: 3.36%
+
+	Payment method: SEPA
+	Offer ID: QVtzZLvc
+	Amount: 0.2 BTC
+	Maker fee: 0.001075 BTC
+	Taker fee: 0.001320 BTC
+	Price for 1: 3205.22 EUR
+	Maximum: 641.04 EUR
+	Distance from market: 4.35%
+
+BTC Offers with CHF (Last trade (ID: gJPPC) price for 1: 3789.60, Distance from current market: -1.37%, Age: 2d)
+Sells
+	Payment method: NATIONAL_BANK
+	Offer ID: MIXCV8JM
+	Amount: 0.2 - 0.5 BTC
+	Maker fee: 0.000845 - 0.001753 BTC
+	Taker fee: 0.001320 - 0.002220 BTC
+	Price for 1: 3930.04 CHF
+	Maximum: 1965.02 CHF
+	Distance from market: 2.29%
+
+	Payment method: NATIONAL_BANK
+	Offer ID: r7w20
+	Amount: 0.2 - 0.5 BTC
+	Maker fee: 0.000976 - 0.002081 BTC
+	Taker fee: 0.001320 - 0.002220 BTC
+	Price for 1: 3972.30 CHF
+	Maximum: 1986.15 CHF
+	Distance from market: 3.39%
+
+	Payment method: NATIONAL_BANK
+	Offer ID: MTnmbbxb
+	Amount: 0.2 - 0.5 BTC
+	Maker fee: 0.000987 - 0.002108 BTC
+	Taker fee: 0.001320 - 0.002220 BTC
+	Price for 1: 3976.14 CHF
+	Maximum: 1988.07 CHF
+	Distance from market: 3.49%
 Buys
 	Payment method: NATIONAL_BANK
-	Offer ID: xzlen
-	Amount in BTC: 0.05
-	Maker fee in BTC: 0.000320
-	Taker fee in BTC: 0.000560
-	Price for 1: 4247.73
-	Maximum: 212.39
-	Distance from market: 1.99%
+	Offer ID: nwbwej
+	Amount: 0.1 BTC
+	Maker fee: 0.000440 BTC
+	Taker fee: 0.001020 BTC
+	Price for 1: 3841.68 CHF
+	Maximum: 384.17 CHF
+	Distance from market: 0.01%
 
-BTC Offers with GBP (Last trade price for 1: 3631.22, Distance from current market: 4.67%, Age: 26m)
+	Payment method: NATIONAL_BANK
+	Offer ID: fzycmjy
+	Amount: 0.3445 BTC
+	Maker fee: 0.000933 BTC
+	Taker fee: 0.001753 BTC
+	Price for 1: 3803.26 CHF
+	Maximum: 1310.22 CHF
+	Distance from market: 1.01%
 
-LTC Offers with BTC (Last trade price for 1 in USD: 58.40, Distance from current market: -23.52%, Age: 6d)
+	Payment method: NATIONAL_BANK
+	Offer ID: 390108
+	Amount: 0.2 - 0.5 BTC
+	Maker fee: 0.000861 - 0.001793 BTC
+	Taker fee: 0.001320 - 0.002220 BTC
+	Price for 1: 3749.48 CHF
+	Maximum: 1874.74 CHF
+	Distance from market: 2.41%
+
+BTC Offers with GBP (Last trade (ID: 81836) price for 1: 3020.46, Distance from current market: 2.72%, Age: 16h)
 Sells
-	Offer ID: wPBxDy13
-	Amount in BTC: 0.1 - 0.6267
-	Maker fee in BTC: 0.000453 - 0.002210
-	Taker fee in BTC: 0.000660 - 0.002240
-	Price for 1 in USD: 78.49
-	Maximum in USD: 2815.52
-	Distance from market: 2.78%
+	Payment method: FASTER_PAYMENTS
+	Offer ID: jlvrtp
+	Amount: 0.15 BTC
+	Maker fee: 0.000650 BTC
+	Taker fee: 0.001170 BTC
+	Price for 1: 2995.54 GBP
+	Maximum: 449.33 GBP
+	Distance from market: 1.87%
+Buys
+	Payment method: FASTER_PAYMENTS
+	Offer ID: 30892865
+	Amount: 0.1 - 0.5 BTC
+	Maker fee: 0.000536 - 0.001718 BTC
+	Taker fee: 0.001020 - 0.002220 BTC
+	Price for 1: 2876.32 GBP
+	Maximum: 1438.16 GBP
+	Distance from market: 2.18%
 
-ETH Offers with BTC (Last trade price for 1 in USD: 359.04, Distance from current market: 5.09%, Age: 10d)
+LTC Offers with BTC (Last trade (ID: wPBxDy13) price for 1 in USD: 66.47, Distance from current market: 24.35%, Age: 16d)
+Sells
+	Offer ID: 0834613
+	Amount: 0.25 - 0.5 BTC
+	Maker fee: 0.001265 - 0.002291 BTC
+	Taker fee: 0.001470 - 0.002220 BTC
+	Price for 1: 55.70 USD
+	Maximum: 1975.80 USD
+	Distance from market: 4.21%
 
-Last updated: Sun Sep  3 17:17:40 2017 CEST
+ETH Offers with BTC (Last trade (ID: ouyuh) price for 1 in USD: 299.62, Distance from current market: 2.59%, Age: 5d)
+Sells
+	Offer ID: rrugzo
+	Amount: 0.05 - 2.0 BTC
+	Maker fee: 0.000443 - 0.008348 BTC
+	Taker fee: 0.000920 - 0.006720 BTC
+	Price for 1: 304.06 USD
+	Maximum: 7903.22 USD
+	Distance from market: 4.11%
+
+	Offer ID: 124543
+	Amount: 0.25 - 0.75 BTC
+	Maker fee: 0.001256 - 0.003288 BTC
+	Taker fee: 0.001470 - 0.002970 BTC
+	Price for 1: 304.12 USD
+	Maximum: 2963.71 USD
+	Distance from market: 4.13%
+
+Last updated: Tue Sep 26 14:40:08 2017 UTC
 
 Notes:
 
