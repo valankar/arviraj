@@ -1,5 +1,5 @@
 # arviraj
-Command line client to show interesting offers on Bisq
+Command line client to show interesting offers on [Bisq](https://bisq.network/)
 
 An example of this running is at:
 
