@@ -136,6 +136,9 @@ def get_range_or_value(first, second, format_str):
     else:
         return (format_str + ' - ' + format_str) % (first, second)
 
+def shorten_trade_id(trade_id):
+    return trade_id.split('-')[0]
+
 def process_offer(offer, market_price, distance, multiplier, sale):
     output = []
     price = float(offer['price'])
@@ -151,7 +154,7 @@ def process_offer(offer, market_price, distance, multiplier, sale):
         fiat = True
     else:
         volume = offer['volume']
-    output.append('\tOffer ID: %s' % (offer['offer_id'].split('-')[0]))
+    output.append('\tOffer ID: %s' % (shorten_trade_id(offer['offer_id']),))
     output.append('\tAmount in BTC: %s' % (get_range_or_value(float(offer['min_amount']), float(volume), '%s')))
     min_fee = get_fees(float(offer['min_amount']), abs(distance_from_market_percent))
     max_fee = get_fees(float(volume), abs(distance_from_market_percent))
@@ -182,13 +185,15 @@ def get_human_readable_time(seconds):
     
 def get_last_trade(bisq_last_trade, market_price, multiplier):
     price = float(bisq_last_trade['price'])
+    trade_id = shorten_trade_id(bisq_last_trade['trade_id'])
     age = get_human_readable_time(NOW - int(bisq_last_trade['trade_date'] / 1000))
     distance_from_market_percent = ((price * multiplier) - market_price) / market_price * 100
     if multiplier == 1:
         price_text = ': %.2f' % (price,)
     else:
         price_text = ' in USD: %.2f' % (price * multiplier,)
-    text = 'Last trade price for 1%s, Distance from current market: %.2f%%, Age: %s' % (price_text, distance_from_market_percent, age)
+    text = 'Last trade (ID: %s) price for 1%s, Distance from current market: %.2f%%, Age: %s' % (
+            trade_id, price_text, distance_from_market_percent, age)
     return text
 
 def write_offers(output_file, bisq_market, market_price, distance, multiplier):
