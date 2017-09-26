@@ -16,6 +16,7 @@ import re
 import smtplib
 import twitter
 from email.mime.text import MIMEText
+from babel import numbers
 
 DOCS="""
 Notes:
@@ -35,6 +36,7 @@ LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp
 CONFIG={}
 MARKET_DISTANCES=range(1, 101)
 NOW=time.time()
+CURRENCY_FORMAT=u'###0.00 ¤¤'
 
 
 def send_twitter_notification(output, offer_id, criteria):
@@ -49,7 +51,7 @@ def send_twitter_notification(output, offer_id, criteria):
                       access_token_secret=criteria['access_token_secret'])
     condensed = [criteria['type'].upper()]
     for line in output:
-        if 'fee' in line:
+        if 'fee:' in line:
             continue
         line = line.replace(' from market', '')
         condensed.append(re.sub(r'\s+', ' ', line.strip()))
@@ -117,7 +119,7 @@ def get_bitcoin_average_headers():
     return({'X-Signature': signature})
 
 def get_bitcoin_average(from_cur, to_cur, headers):
-    url = 'https://apiv2.bitcoinaverage.com/convert/global?from=%s&to=%s&amount=1' % (from_cur.upper(), to_cur.upper())
+    url = 'https://apiv2.bitcoinaverage.com/convert/global?from={}&to={}&amount=1'.format(from_cur.upper(), to_cur.upper())
     return float(requests.get(url=url, headers=headers).json()['price'])
 
 def get_bisq_tx_fee():
@@ -132,14 +134,17 @@ def get_fees(amount, distance):
     
 def get_range_or_value(first, second, format_str):
     if first == second:
-        return format_str % (first,)
+        return format_str.format(first)
     else:
-        return (format_str + ' - ' + format_str) % (first, second)
+        return (format_str + ' - ' + format_str).format(first, second)
 
 def shorten_trade_id(trade_id):
     return trade_id.split('-')[0]
 
-def process_offer(offer, market_price, distance, multiplier, sale):
+def format_currency(value, currency):
+    return numbers.format_currency(value, currency, CURRENCY_FORMAT)
+
+def process_offer(offer, currency, market_price, distance, multiplier, sale):
     output = []
     price = float(offer['price'])
     distance_from_market_percent = ((price * multiplier) - market_price) / market_price * 100
@@ -149,24 +154,24 @@ def process_offer(offer, market_price, distance, multiplier, sale):
         return []
     fiat = False
     if offer['payment_method'] != 'BLOCK_CHAINS':
-        output.append('\tPayment method: %s' % offer['payment_method'])
+        output.append('\tPayment method: {}'.format(offer['payment_method']))
         volume = offer['amount']
         fiat = True
     else:
         volume = offer['volume']
-    output.append('\tOffer ID: %s' % (shorten_trade_id(offer['offer_id']),))
-    output.append('\tAmount in BTC: %s' % (get_range_or_value(float(offer['min_amount']), float(volume), '%s')))
+    output.append('\tOffer ID: {}'.format(shorten_trade_id(offer['offer_id'])))
+    output.append('\tAmount: {} BTC'.format(get_range_or_value(float(offer['min_amount']), float(volume), '{}')))
     min_fee = get_fees(float(offer['min_amount']), abs(distance_from_market_percent))
     max_fee = get_fees(float(volume), abs(distance_from_market_percent))
-    output.append('\tMaker fee in BTC: %s' % (get_range_or_value(min_fee[0], max_fee[0], '%f')))
-    output.append('\tTaker fee in BTC: %s' % (get_range_or_value(min_fee[1], max_fee[1], '%f')))
+    output.append('\tMaker fee: {} BTC'.format(get_range_or_value(min_fee[0], max_fee[0], '{:f}')))
+    output.append('\tTaker fee: {} BTC'.format(get_range_or_value(min_fee[1], max_fee[1], '{:f}')))
     if fiat:
-        output.append('\tPrice for 1: %.2f' % price)
-        output.append('\tMaximum: %.2f' % (price * float(volume)))
+        output.append('\tPrice for 1: {}'.format(format_currency(price, currency)))
+        output.append('\tMaximum: {}'.format(format_currency(price * float(volume), currency)))
     else:
-        output.append('\tPrice for 1 in USD: %.2f' % (price * multiplier))
-        output.append('\tMaximum in USD: %.2f' % (multiplier * float(volume)))
-    output.append('\tDistance from market: %.2f%%' % distance_from_market_percent)
+        output.append('\tPrice for 1: {}'.format(format_currency(price * multiplier, 'USD')))
+        output.append('\tMaximum: {}'.format(format_currency(multiplier * float(volume), 'USD')))
+    output.append('\tDistance from market: {:.2f}%'.format(distance_from_market_percent))
     send_notification(output, offer['offer_id'], offer['payment_method'], distance_from_market_percent, sale)
     return output
     
@@ -176,12 +181,12 @@ def get_human_readable_time(seconds):
     m = int((seconds % (60 * 60)) / 60)
     s = seconds % 60
     if d:
-        return '%dd' % d
+        return '{:d}d'.format(d)
     if h:
-        return '%dh' % h
+        return '{:d}h'.format(h)
     if m:
-        return '%dm' % m
-    return '%ds' % s
+        return '{:d}m'.format(m)
+    return '{:d}s'.format(s)
     
 def get_last_trade(bisq_last_trade, market_price, multiplier):
     price = float(bisq_last_trade['price'])
@@ -189,23 +194,23 @@ def get_last_trade(bisq_last_trade, market_price, multiplier):
     age = get_human_readable_time(NOW - int(bisq_last_trade['trade_date'] / 1000))
     distance_from_market_percent = ((price * multiplier) - market_price) / market_price * 100
     if multiplier == 1:
-        price_text = ': %.2f' % (price,)
+        price_text = ': {:.2f}'.format(price)
     else:
-        price_text = ' in USD: %.2f' % (price * multiplier,)
-    text = 'Last trade (ID: %s) price for 1%s, Distance from current market: %.2f%%, Age: %s' % (
+        price_text = ' in USD: {:.2f}'.format(price * multiplier)
+    text = 'Last trade (ID: {}) price for 1{}, Distance from current market: {:.2f}%, Age: {}'.format(
             trade_id, price_text, distance_from_market_percent, age)
     return text
 
-def write_offers(output_file, bisq_market, market_price, distance, multiplier):
+def write_offers(output_file, currency, bisq_market, market_price, distance, multiplier):
     sell_offers = []
     for offer in bisq_market['sells']:
-        output = process_offer(offer, market_price, distance, multiplier, True)
+        output = process_offer(offer, currency, market_price, distance, multiplier, True)
         if output:
             sell_offers.append(output)
 
     buy_offers = []
     for offer in bisq_market['buys']:
-        output = process_offer(offer, market_price, distance, multiplier, False)
+        output = process_offer(offer, currency, market_price, distance, multiplier, False)
         if output:
             buy_offers.append(output)
 
@@ -220,10 +225,10 @@ def write_offers(output_file, bisq_market, market_price, distance, multiplier):
     output_file.write('\n')
 
 def get_bisq_market_url(market):
-    return('https://market.bisq.io/api/offers?market=%s' % (market,))
+    return('https://market.bisq.io/api/offers?market={}'.format(market))
 
 def get_bisq_last_trade_url(market):
-    return('https://market.bisq.io/api/trades?market=%s&limit=1' % (market,))
+    return('https://market.bisq.io/api/trades?market={}&limit=1'.format(market))
 
 
 load_config()
@@ -242,13 +247,13 @@ for market in CONFIG['markets']:
     bisq_last_trades[market] = requests.get(get_bisq_last_trade_url(market)).json()[0]
 
 for distance in MARKET_DISTANCES:
-    f = open(CONFIG['distance_file_format'] % (distance,), 'w')
+    f = open(CONFIG['distance_file_format'].format(distance), 'w')
     for market in CONFIG['markets']:
         (src, dst) = market.split('_')
         if dst == 'btc':
             dst = 'usd'
-        f.write('Current %s price in %s: %.2f\n' % (src.upper(), dst.upper(), bitcoin_averages[market]))
-    f.write('\nBisq offers with market distance < %d%%\n\n' % (distance,))
+        f.write('Current {} price in {}: {:.2f}\n'.format(src.upper(), dst.upper(), bitcoin_averages[market]))
+    f.write('\nBisq offers with market distance < {:d}%\n\n'.format(distance))
 
     for market in CONFIG['markets']:
         multiplier = 1
@@ -256,11 +261,11 @@ for distance in MARKET_DISTANCES:
         if dst == 'btc':
             multiplier = bitcoin_averages['btc_usd']
         last_trade = get_last_trade(bisq_last_trades[market], bitcoin_averages[market], multiplier)
-        f.write('%s Offers with %s (%s)' % (src.upper(), dst.upper(), last_trade))
-        write_offers(f, bisq_markets[market], bitcoin_averages[market], distance, multiplier)
+        f.write('{} Offers with {} ({})'.format(src.upper(), dst.upper(), last_trade))
+        write_offers(f, dst.upper(), bisq_markets[market], bitcoin_averages[market], distance, multiplier)
         f.write('\n')
         
-    f.write('Last updated: %s\n' % (time.strftime('%c %Z', time.localtime(NOW))))
+    f.write('Last updated: {}\n'.format(time.strftime('%c %Z', time.localtime(NOW))))
     f.writelines(DOCS)
     f.close()
 

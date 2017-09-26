@@ -1,6 +1,6 @@
 {
 	"markets": [ "btc_usd", "btc_eur", "btc_chf", "btc_gbp", "ltc_btc", "eth_btc" ],
-	"distance_file_format": "bisq_%d.txt",
+	"distance_file_format": "bisq_{:d}.txt",
 	"notification_state_file": "notification_state.json",
 	"notifications": [
 		{
