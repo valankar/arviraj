@@ -4,7 +4,7 @@
 	"notification_state_file": "notification_state.json",
 	"notifications": [
 		{
-			"type": "sell",
+			"type": [ "sell", "buy" ],
 			"payment_method": [ "CLEAR_X_CHANGE", "CHASE_QUICK_PAY", "SEPA", "NATIONAL_BANK" ],
 			"distance": 1,
 			"notification_method": "twitter",

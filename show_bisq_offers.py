@@ -81,8 +81,12 @@ def send_email_notification(output, offer_id, criteria):
 def send_notification(output, offer_id, payment_method, distance_from_market_percent, sale):
     global CONFIG
     for criteria in CONFIG['notifications']:
-        if criteria['type'] == 'sell' and not sale:
-            continue
+        if sale:
+            if 'sell' not in criteria['type']:
+                continue
+        else:
+            if 'buy' not in criteria['type']:
+                continue
         if payment_method not in criteria['payment_method']:
             continue
         if criteria['distance'] < distance_from_market_percent:
@@ -179,7 +183,7 @@ def get_human_readable_time(seconds):
     d = int(seconds / (60 * 60 * 24))
     h = int((seconds % (60 * 60 * 24)) / (60 * 60))
     m = int((seconds % (60 * 60)) / 60)
-    s = seconds % 60
+    s = int(seconds % 60)
     if d:
         return '{:d}d'.format(d)
     if h:
