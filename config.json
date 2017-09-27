@@ -14,7 +14,7 @@
 			"access_token_secret": "SECRET"
 		},
 		{
-			"type": "sell",
+			"type": [ "sell" ],
 			"payment_method": [ "CLEAR_X_CHANGE", "CHASE_QUICK_PAY", "SEPA", "NATIONAL_BANK" ],
 			"distance": 1,
 			"notification_method": "email",
