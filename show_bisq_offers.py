@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 #
 # This creates 100 files in the current directory of the format bisq_N.txt where N is the maximum market distance percent.
-# You must set environment variables BITCOIN_AVERAGE_PUB_KEY and BITCOIN_AVERAGE_SEC_KEY based on an API key for bitcoinaverage.com.
 # You must pass a config file as the first argument.
 
 import requests
@@ -114,10 +113,8 @@ def save_notification_state():
         json.dump(CONFIG['sent_notifications'], f, indent=2, sort_keys=True)
       
 def get_bitcoin_average_headers():
-    pub_key = os.getenv('BITCOIN_AVERAGE_PUB_KEY')
-    sec_key = os.getenv('BITCOIN_AVERAGE_SEC_KEY')
-    if not pub_key or not sec_key:
-        raise(Exception('You must set BITCOIN_AVERAGE_PUB_KEY and BITCOIN_AVERAGE_SEC_KEY'))
+    pub_key = CONFIG['bitcoin_average_public_key']
+    sec_key = CONFIG['bitcoin_average_secret_key']
     timestamp = int(NOW)
     payload = '{}.{}'.format(timestamp, pub_key)
     hex_hash = hmac.new(sec_key.encode(), msg=payload.encode(), digestmod=hashlib.sha256).hexdigest()
