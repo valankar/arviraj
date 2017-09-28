@@ -10,7 +10,6 @@ import json
 import math
 import time
 import sys
-import os
 import re
 import smtplib
 import twitter
