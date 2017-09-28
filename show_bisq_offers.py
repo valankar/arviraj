@@ -39,7 +39,7 @@ NOW=time.time()
 CURRENCY_FORMAT=u'###0.00 ¤¤'
 
 
-def send_twitter_notification(output, offer_id, criteria):
+def send_twitter_notification(output, offer_id, criteria, trade_type):
     global CONFIG
     sent = offer_id + ' twitter ' + criteria['consumer_key']
     if sent in CONFIG['sent_notifications']:
@@ -49,7 +49,7 @@ def send_twitter_notification(output, offer_id, criteria):
                       consumer_secret=criteria['consumer_secret'],
                       access_token_key=criteria['access_token'],
                       access_token_secret=criteria['access_token_secret'])
-    condensed = [criteria['type'].upper()]
+    condensed = [trade_type]
     for line in output:
         if 'fee:' in line:
             continue
@@ -61,13 +61,13 @@ def send_twitter_notification(output, offer_id, criteria):
     except:
         pass
 
-def send_email_notification(output, offer_id, criteria):
+def send_email_notification(output, offer_id, criteria, trade_type):
     global CONFIG
     sent = offer_id + ' email ' + criteria['email']
     if sent in CONFIG['sent_notifications']:
         return
     CONFIG['sent_notifications'][sent] = True
-    msg = MIMEText('\n'.join(output))
+    msg = MIMEText('\n'.join([trade_type] + output))
     msg['Subject'] = criteria['subject']
     msg['From'] = criteria['from']
     msg['To'] = criteria['email']
@@ -82,9 +82,11 @@ def send_notification(output, offer_id, payment_method, distance_from_market_per
     global CONFIG
     for criteria in CONFIG['notifications']:
         if sale:
+            trade_type = 'SELL'
             if 'sell' not in criteria['type']:
                 continue
         else:
+            trade_type = 'BUY'
             if 'buy' not in criteria['type']:
                 continue
         if payment_method not in criteria['payment_method']:
@@ -93,9 +95,9 @@ def send_notification(output, offer_id, payment_method, distance_from_market_per
             continue
         method = criteria['notification_method']
         if method == 'email':
-            send_email_notification(output, offer_id, criteria)
+            send_email_notification(output, offer_id, criteria, trade_type)
         elif method == 'twitter':
-            send_twitter_notification(output, offer_id, criteria)
+            send_twitter_notification(output, offer_id, criteria, trade_type)
 
 def load_config():
     global CONFIG
