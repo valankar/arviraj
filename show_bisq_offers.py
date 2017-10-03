@@ -25,6 +25,7 @@ For "Buys", a negative market distance means the offer is to buy at greater than
 This means that a negative (or low) distance is generally a good deal for both types.
 
 Code for this tool is available at: https://github.com/valankar/arviraj
+A Twitter bot with good offers is available at: https://twitter.com/BisqArviraj
 
 Find this useful? Please consider donating:
 BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
