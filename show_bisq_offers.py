@@ -50,9 +50,10 @@ def send_twitter_notification(output, offer_id, criteria, trade_type):
                       access_token_secret=criteria['access_token_secret'])
     condensed = [trade_type]
     for line in output:
-        for skip in ('fee:', 'Age:'):
-            if skip in line:
-                continue
+        if 'fee:' in line:
+            continue
+        if 'Age:' in line:
+            continue
         line = line.replace(' from market', '')
         condensed.append(re.sub(r'\s+', ' ', line.strip()))
     tweet = '\n'.join(condensed)[:140]
