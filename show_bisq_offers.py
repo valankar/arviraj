@@ -49,8 +49,9 @@ def send_twitter_notification(output, offer_id, criteria, trade_type):
                       access_token_secret=criteria['access_token_secret'])
     condensed = [trade_type]
     for line in output:
-        if 'fee:' in line:
-            continue
+        for skip in ('fee:', 'Age:'):
+            if skip in line:
+                continue
         line = line.replace(' from market', '')
         condensed.append(re.sub(r'\s+', ' ', line.strip()))
     tweet = '\n'.join(condensed)[:140]
@@ -161,6 +162,7 @@ def process_offer(offer, currency, market_price, distance, multiplier, sale):
         fiat = True
     else:
         volume = offer['volume']
+    age = get_human_readable_time(NOW - int(offer['offer_date'] / 1000))
     output.append('\tOffer ID: {}'.format(shorten_trade_id(offer['offer_id'])))
     output.append('\tAmount: {} BTC'.format(get_range_or_value(float(offer['min_amount']), float(volume), '{}')))
     min_fee = get_fees(float(offer['min_amount']), abs(distance_from_market_percent))
@@ -174,6 +176,7 @@ def process_offer(offer, currency, market_price, distance, multiplier, sale):
         output.append('\tPrice for 1: {}'.format(format_currency(price * multiplier, 'USD')))
         output.append('\tMaximum: {}'.format(format_currency(multiplier * float(volume), 'USD')))
     output.append('\tDistance from market: {:.2f}%'.format(distance_from_market_percent))
+    output.append('\tAge: {}'.format(age))
     send_notification(output, offer['offer_id'], offer['payment_method'], distance_from_market_percent, sale)
     return output
     
