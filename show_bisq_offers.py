@@ -29,6 +29,7 @@ A Twitter bot with good offers is available at: https://twitter.com/BisqArviraj
 
 Find this useful? Please consider donating:
 BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
+DCR: Dsodia7RaK1dwA3UvVbTtsRuH8zc4Bvs5oF
 ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC
 LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp
 """
@@ -122,6 +123,11 @@ def get_bitcoin_average_headers():
     hex_hash = hmac.new(sec_key.encode(), msg=payload.encode(), digestmod=hashlib.sha256).hexdigest()
     signature = '{}.{}'.format(payload, hex_hash)
     return({'X-Signature': signature})
+
+def get_poloniex_last_trade(from_cur, to_cur):
+    url = 'https://apiv2.bitcoinaverage.com/exchanges/ticker/poloniex'
+    symbol = from_cur.upper() + to_cur.upper()
+    return float(requests.get(url=url).json()['symbols'][symbol]['last'])
 
 def get_bitcoin_average(from_cur, to_cur, headers):
     url = 'https://apiv2.bitcoinaverage.com/convert/global?from={}&to={}&amount=1'.format(from_cur.upper(), to_cur.upper())
@@ -241,11 +247,20 @@ def get_bisq_last_trade_url(market):
 load_config()
 bitcoin_averages = {}
 headers = get_bitcoin_average_headers()
+needs_conversion = {}
 for market in CONFIG['markets']:
     (src, dst) = market.split('_')
     if dst == 'btc':
+        if src == 'dcr':
+            bitcoin_averages[market] = get_poloniex_last_trade(src, dst)
+            needs_conversion[market] = True
+            continue
         dst = 'usd'
     bitcoin_averages[market] = get_bitcoin_average(src, dst, headers)
+
+for convert in needs_conversion:
+    in_usd = bitcoin_averages['btc_usd'] * bitcoin_averages[convert]
+    bitcoin_averages[convert] = in_usd
 
 bisq_markets = {}
 bisq_last_trades = {}
