@@ -28,6 +28,7 @@ Code for this tool is available at: https://github.com/valankar/arviraj
 A Twitter bot with good offers is available at: https://twitter.com/BisqArviraj
 
 Find this useful? Please consider donating:
+BCH: 1DETS4T59u13Xo25f7qrpV53Dt4efk96np
 BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
 DCR: Dsodia7RaK1dwA3UvVbTtsRuH8zc4Bvs5oF
 ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC
