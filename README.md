@@ -17,6 +17,8 @@ https://twitter.com/BisqArviraj
 
 Find this useful?
 
+BCH: 1DETS4T59u13Xo25f7qrpV53Dt4efk96np
+
 BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
 
 DCR: Dsodia7RaK1dwA3UvVbTtsRuH8zc4Bvs5oF
