@@ -267,7 +267,10 @@ bisq_markets = {}
 bisq_last_trades = {}
 for market in CONFIG['markets']:
     bisq_markets[market] = requests.get(get_bisq_market_url(market)).json()[market]
-    bisq_last_trades[market] = requests.get(get_bisq_last_trade_url(market)).json()[0]
+    try:
+        bisq_last_trades[market] = requests.get(get_bisq_last_trade_url(market)).json()[0]
+    except IndexError:
+        pass
 
 for distance in MARKET_DISTANCES:
     f = open(CONFIG['distance_file_format'].format(distance), 'w')
@@ -283,7 +286,10 @@ for distance in MARKET_DISTANCES:
         (src, dst) = market.split('_')
         if dst == 'btc':
             multiplier = bitcoin_averages['btc_usd']
-        last_trade = get_last_trade(bisq_last_trades[market], bitcoin_averages[market], multiplier)
+        try:
+            last_trade = get_last_trade(bisq_last_trades[market], bitcoin_averages[market], multiplier)
+        except KeyError:
+            last_trade = 'no last trade found'
         f.write('{} Offers with {} ({})'.format(src.upper(), dst.upper(), last_trade))
         write_offers(f, dst.upper(), bisq_markets[market], bitcoin_averages[market], distance, multiplier)
         f.write('\n')
