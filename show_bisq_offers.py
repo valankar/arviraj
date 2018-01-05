@@ -28,11 +28,11 @@ Code for this tool is available at: https://github.com/valankar/arviraj
 A Twitter bot with good offers is available at: https://twitter.com/BisqArviraj
 
 Find this useful? Please consider donating:
-BCH: 1DETS4T59u13Xo25f7qrpV53Dt4efk96np
-BTC: 1JM5NpCSNkiszS2zKJUtf8ZJinGbyJqYS1
+BCH: 16VpFt7VS9qDbKiobPYo2dyAbo9kaZPmw9
+BTC: 3JMg8bqgexYwXEwJiDncuBnoSAqGntkyS9
 DCR: Dsodia7RaK1dwA3UvVbTtsRuH8zc4Bvs5oF
-ETH: 0x2cE131fa0385F4dA91d4542DD7D9Ca22988964FC
-LTC: LKYt9emtttftRN2SEEpfnV1BsMvAUTCaUp
+ETH: 0x30600Ba4A62903231681EdFE2f2e2Fe971077A3D
+LTC: MEHS3ZpPLb3MZq5axjo5yWTfSpuw6xAtgS
 """
 CONFIG={}
 MARKET_DISTANCES=range(0, 101)
