@@ -223,13 +223,13 @@ def get_last_trade(bisq_last_trade, market_price, multiplier):
 
 def write_offers(output_file, currency, bisq_market, market_price, distance, multiplier):
     sell_offers = []
-    for offer in sorted(bisq_market['sells'], key=lambda x: x['offer_date'], reverse=True):
+    for offer in sorted(bisq_market['sells'], key=lambda x: x['volume'], reverse=True):
         output = process_offer(offer, currency, market_price, distance, multiplier, True)
         if output:
             sell_offers.append(output)
 
     buy_offers = []
-    for offer in sorted(bisq_market['buys'], key=lambda x: x['offer_date'], reverse=True):
+    for offer in sorted(bisq_market['buys'], key=lambda x: x['volume'], reverse=True):
         output = process_offer(offer, currency, market_price, distance, multiplier, False)
         if output:
             buy_offers.append(output)
