@@ -3,6 +3,7 @@
 # This creates 100 files in the current directory of the format bisq_N.txt where N is the maximum market distance percent.
 # You must pass a config file as the first argument.
 
+import functools
 import requests
 import hashlib
 import hmac
@@ -134,12 +135,17 @@ def get_bitcoin_average(from_cur, to_cur, headers):
     url = 'https://apiv2.bitcoinaverage.com/convert/global?from={}&to={}&amount=1'.format(from_cur.upper(), to_cur.upper())
     return float(requests.get(url=url, headers=headers).json()['price'])
 
+@functools.lru_cache(maxsize=None)
 def get_bisq_tx_fee():
-    return int(requests.get(url='http://37.139.14.34:8080/getFees').json()['dataMap']['btcTxFee'])
-TX_FEE=get_bisq_tx_fee()
+    fee = 0
+    try:
+        fee = int(requests.get(url='http://37.139.14.34:8080/getFees').json()['dataMap']['btcTxFee'])
+    except requests.exceptions.ConnectionError:
+        pass
+    return fee
     
 def get_fees(amount, distance):
-    fee = TX_FEE * 200/100000000.
+    fee = get_bisq_tx_fee() * 200/100000000.
     maker = max(0.0002, 0.002 * amount * math.sqrt(distance)) + fee
     taker = max(0.0002, 0.003 * amount) + (3 * fee)
     return (maker, taker)
