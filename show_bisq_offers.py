@@ -171,7 +171,7 @@ def process_offer(offer, currency, market_price, distance, multiplier, sale):
     if distance_from_market_percent > distance:
         return []
     fiat = False
-    if offer['payment_method'] != 'BLOCK_CHAINS':
+    if offer['payment_method'] not in ('BLOCK_CHAINS', 'F2F'):
         output.append('\tPayment method: {}'.format(offer['payment_method']))
         volume = offer['amount']
         fiat = True
