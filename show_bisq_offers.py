@@ -39,6 +39,7 @@ CONFIG={}
 MARKET_DISTANCES=range(0, 101)
 NOW=time.time()
 CURRENCY_FORMAT=u'###0.00 ¤¤'
+IGNORE_PAYMENT_METHODS=('F2F', 'CASH_DEPOSIT', 'US_POSTAL_MONEY_ORDER')
 
 
 def send_twitter_notification(output, offer_id, criteria, trade_type):
@@ -171,7 +172,9 @@ def process_offer(offer, currency, market_price, distance, multiplier, sale):
     if distance_from_market_percent > distance:
         return []
     fiat = False
-    if offer['payment_method'] not in ('BLOCK_CHAINS', 'F2F'):
+    if offer['payment_method'] in IGNORE_PAYMENT_METHODS:
+        return []
+    if offer['payment_method'] != 'BLOCK_CHAINS':
         output.append('\tPayment method: {}'.format(offer['payment_method']))
         volume = offer['amount']
         fiat = True
