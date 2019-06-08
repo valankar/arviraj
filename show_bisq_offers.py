@@ -16,6 +16,7 @@ import smtplib
 import twitter
 from email.mime.text import MIMEText
 from babel import numbers
+from coinbase.wallet.client import Client
 
 DOCS="""
 Notes:
@@ -117,7 +118,7 @@ def load_config():
 def save_notification_state():
     with open(CONFIG['notification_state_file'], 'w') as f:
         json.dump(CONFIG['sent_notifications'], f, indent=2, sort_keys=True)
-      
+
 def get_bitcoin_average_headers():
     pub_key = CONFIG['bitcoin_average_public_key']
     sec_key = CONFIG['bitcoin_average_secret_key']
@@ -132,10 +133,6 @@ def get_poloniex_last_trade(from_cur, to_cur):
     symbol = from_cur.upper() + to_cur.upper()
     return float(requests.get(url=url).json()['symbols'][symbol]['last'])
 
-def get_bitcoin_average(from_cur, to_cur, headers):
-    url = 'https://apiv2.bitcoinaverage.com/convert/global?from={}&to={}&amount=1'.format(from_cur.upper(), to_cur.upper())
-    return float(requests.get(url=url, headers=headers).json()['price'])
-
 @functools.lru_cache(maxsize=None)
 def get_bisq_tx_fee():
     fee = 0
@@ -144,13 +141,13 @@ def get_bisq_tx_fee():
     except requests.exceptions.ConnectionError:
         pass
     return fee
-    
+
 def get_fees(amount, distance):
     fee = get_bisq_tx_fee() * 200/100000000.
     maker = max(0.0002, 0.002 * amount * math.sqrt(distance)) + fee
     taker = max(0.0002, 0.003 * amount) + (3 * fee)
     return (maker, taker)
-    
+
 def get_range_or_value(first, second, format_str):
     if first == second:
         return format_str.format(first)
@@ -197,7 +194,7 @@ def process_offer(offer, currency, market_price, distance, multiplier, sale):
     output.append('\tAge: {}'.format(age))
     send_notification(output, offer['offer_id'], offer['payment_method'], distance_from_market_percent, sale)
     return output
-    
+
 def get_human_readable_time(seconds):
     d = int(seconds / (60 * 60 * 24))
     h = int((seconds % (60 * 60 * 24)) / (60 * 60))
@@ -210,7 +207,7 @@ def get_human_readable_time(seconds):
     if m:
         return '{:d}m'.format(m)
     return '{:d}s'.format(s)
-    
+
 def get_last_trade(bisq_last_trade, market_price, multiplier):
     price = float(bisq_last_trade['price'])
     trade_id = shorten_trade_id(bisq_last_trade['trade_id'])
@@ -253,24 +250,22 @@ def get_bisq_market_url(market):
 def get_bisq_last_trade_url(market):
     return('https://market.bisq.io/api/trades?market={}&limit=1'.format(market))
 
+@functools.lru_cache(maxsize=None)
+def get_coinbase_spot(client, src, dst):
+    return float(client.get_spot_price(currency_pair = '%s-%s' % (src, dst))['amount'])
 
 load_config()
-bitcoin_averages = {}
-headers = get_bitcoin_average_headers()
+market_prices = {}
 needs_conversion = {}
+coinbase_client = Client(CONFIG['coinbase_api_key'], CONFIG['coinbase_api_secret'])
 for market in CONFIG['markets']:
     (src, dst) = market.split('_')
     if dst == 'btc':
         if src == 'dcr':
-            bitcoin_averages[market] = get_poloniex_last_trade(src, dst)
-            needs_conversion[market] = True
+            market_prices[market] = get_poloniex_last_trade(src, dst)
             continue
         dst = 'usd'
-    bitcoin_averages[market] = get_bitcoin_average(src, dst, headers)
-
-for convert in needs_conversion:
-    in_usd = bitcoin_averages['btc_usd'] * bitcoin_averages[convert]
-    bitcoin_averages[convert] = in_usd
+    market_prices[market] = get_coinbase_spot(coinbase_client, src, dst)
 
 bisq_markets = {}
 bisq_last_trades = {}
@@ -287,22 +282,22 @@ for distance in MARKET_DISTANCES:
         (src, dst) = market.split('_')
         if dst == 'btc':
             dst = 'usd'
-        f.write('Current {} price in {}: {:.2f}\n'.format(src.upper(), dst.upper(), bitcoin_averages[market]))
+        f.write('Current {} price in {}: {:.2f}\n'.format(src.upper(), dst.upper(), market_prices[market]))
     f.write('\nBisq offers with market distance < {:d}%\n\n'.format(distance))
 
     for market in CONFIG['markets']:
         multiplier = 1
         (src, dst) = market.split('_')
         if dst == 'btc':
-            multiplier = bitcoin_averages['btc_usd']
+            multiplier = market_prices['btc_usd']
         try:
-            last_trade = get_last_trade(bisq_last_trades[market], bitcoin_averages[market], multiplier)
+            last_trade = get_last_trade(bisq_last_trades[market], market_prices[market], multiplier)
         except KeyError:
             last_trade = 'no last trade found'
         f.write('{} Offers with {} ({})'.format(src.upper(), dst.upper(), last_trade))
-        write_offers(f, dst.upper(), bisq_markets[market], bitcoin_averages[market], distance, multiplier)
+        write_offers(f, dst.upper(), bisq_markets[market], market_prices[market], distance, multiplier)
         f.write('\n')
-        
+
     f.write('Last updated: {}\n'.format(time.strftime('%c %Z', time.localtime(NOW))))
     f.writelines(DOCS)
     f.close()
