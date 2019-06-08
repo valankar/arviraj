@@ -119,10 +119,21 @@ def save_notification_state():
     with open(CONFIG['notification_state_file'], 'w') as f:
         json.dump(CONFIG['sent_notifications'], f, indent=2, sort_keys=True)
 
-def get_poloniex_last_trade(from_cur, to_cur):
-    url = 'https://apiv2.bitcoinaverage.com/exchanges/ticker/poloniex'
-    symbol = from_cur.upper() + to_cur.upper()
-    return float(requests.get(url=url).json()['symbols'][symbol]['last'])
+def get_dcr_spot():
+    global CONFIG
+    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
+    parameters = {
+        'id': '1168'
+    }
+    headers = {
+        'Accepts': 'application/json',
+        'X-CMC_PRO_API_KEY': CONFIG['coinmarketcap_api_key'],
+    }
+    session = requests.Session()
+    session.headers.update(headers)
+    response = session.get(url, params=parameters)
+    data = json.loads(response.text)
+    return float(data['data']['1168']['quote']['USD']['price'])
 
 @functools.lru_cache(maxsize=None)
 def get_bisq_tx_fee():
@@ -253,7 +264,7 @@ for market in CONFIG['markets']:
     (src, dst) = market.split('_')
     if dst == 'btc':
         if src == 'dcr':
-            market_prices[market] = get_poloniex_last_trade(src, dst)
+            market_prices[market] = get_dcr_spot()
             continue
         dst = 'usd'
     market_prices[market] = get_coinbase_spot(coinbase_client, src, dst)

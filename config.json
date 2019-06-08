@@ -1,29 +1,53 @@
 {
-	"markets": [ "btc_usd", "btc_eur", "btc_chf", "btc_gbp", "ltc_btc", "eth_btc" ],
-	"distance_file_format": "bisq_{:d}.txt",
-	"coinbase_api_key": "KEY",
-	"coinbase_api_secret": "SECRET",
-	"notification_state_file": "notification_state.json",
-	"notifications": [
-		{
-			"type": [ "sell", "buy" ],
-			"payment_method": [ "CLEAR_X_CHANGE", "CHASE_QUICK_PAY", "SEPA", "NATIONAL_BANK" ],
-			"distance": 1,
-			"notification_method": "twitter",
-			"consumer_key": "KEY",
-			"consumer_secret": "SECRET",
-			"access_token": "KEY",
-			"access_token_secret": "SECRET"
-		},
-		{
-			"type": [ "sell" ],
-			"payment_method": [ "CLEAR_X_CHANGE", "CHASE_QUICK_PAY", "SEPA", "NATIONAL_BANK" ],
-			"distance": 1,
-			"notification_method": "email",
-			"from": "FROM_ADDRESS",
-			"subject": "Good Bisq Sell Offer",
-			"email": "TO_ADDRESS",
-			"smtp_server": "localhost"
-		}
-	]
+  "markets": [
+    "btc_usd",
+    "btc_eur",
+    "btc_chf",
+    "btc_gbp",
+    "ltc_btc",
+    "eth_btc",
+    "dcr_btc"
+  ],
+  "distance_file_format": "bisq_{:d}.txt",
+  "coinbase_api_key": "KEY",
+  "coinbase_api_secret": "SECRET",
+  "coinmarketcap_api_key": "API_KEY",
+  "notification_state_file": "notification_state.json",
+  "notifications": [
+    {
+      "type": [
+        "sell",
+        "buy"
+      ],
+      "payment_method": [
+        "CLEAR_X_CHANGE",
+        "CHASE_QUICK_PAY",
+        "SEPA",
+        "NATIONAL_BANK"
+      ],
+      "distance": 1,
+      "notification_method": "twitter",
+      "consumer_key": "KEY",
+      "consumer_secret": "SECRET",
+      "access_token": "KEY",
+      "access_token_secret": "SECRET"
+    },
+    {
+      "type": [
+        "sell"
+      ],
+      "payment_method": [
+        "CLEAR_X_CHANGE",
+        "CHASE_QUICK_PAY",
+        "SEPA",
+        "NATIONAL_BANK"
+      ],
+      "distance": 1,
+      "notification_method": "email",
+      "from": "FROM_ADDRESS",
+      "subject": "Good Bisq Sell Offer",
+      "email": "TO_ADDRESS",
+      "smtp_server": "localhost"
+    }
+  ]
 }
