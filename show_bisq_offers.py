@@ -119,15 +119,6 @@ def save_notification_state():
     with open(CONFIG['notification_state_file'], 'w') as f:
         json.dump(CONFIG['sent_notifications'], f, indent=2, sort_keys=True)
 
-def get_bitcoin_average_headers():
-    pub_key = CONFIG['bitcoin_average_public_key']
-    sec_key = CONFIG['bitcoin_average_secret_key']
-    timestamp = int(NOW)
-    payload = '{}.{}'.format(timestamp, pub_key)
-    hex_hash = hmac.new(sec_key.encode(), msg=payload.encode(), digestmod=hashlib.sha256).hexdigest()
-    signature = '{}.{}'.format(payload, hex_hash)
-    return({'X-Signature': signature})
-
 def get_poloniex_last_trade(from_cur, to_cur):
     url = 'https://apiv2.bitcoinaverage.com/exchanges/ticker/poloniex'
     symbol = from_cur.upper() + to_cur.upper()

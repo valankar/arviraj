@@ -1,8 +1,8 @@
 {
 	"markets": [ "btc_usd", "btc_eur", "btc_chf", "btc_gbp", "ltc_btc", "eth_btc" ],
 	"distance_file_format": "bisq_{:d}.txt",
-	"bitcoin_average_public_key": "PUBLIC_KEY",
-	"bitcoin_average_secret_key": "SECRET_KEY",
+	"coinbase_api_key": "KEY",
+	"coinbase_api_secret": "SECRET",
 	"notification_state_file": "notification_state.json",
 	"notifications": [
 		{
