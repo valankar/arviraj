@@ -8,6 +8,12 @@
     "eth_btc",
     "dcr_btc"
   ],
+  "minimum_sale": {
+    "usd": 200,
+    "eur": 200,
+    "chf": 200,
+    "gbp": 100
+  },
   "distance_file_format": "bisq_{:d}.txt",
   "coinbase_api_key": "KEY",
   "coinbase_api_secret": "SECRET",

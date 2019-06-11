@@ -163,6 +163,7 @@ def format_currency(value, currency):
     return numbers.format_currency(value, currency, CURRENCY_FORMAT)
 
 def process_offer(offer, currency, market_price, distance, multiplier, sale):
+    global CONFIG
     output = []
     price = float(offer['price'])
     distance_from_market_percent = ((price * multiplier) - market_price) / market_price * 100
@@ -187,11 +188,19 @@ def process_offer(offer, currency, market_price, distance, multiplier, sale):
     output.append('\tMaker fee: {} BTC'.format(get_range_or_value(min_fee[0], max_fee[0], '{:f}')))
     output.append('\tTaker fee: {} BTC'.format(get_range_or_value(min_fee[1], max_fee[1], '{:f}')))
     if fiat:
-        output.append('\tPrice for 1: {}'.format(format_currency(price, currency)))
-        output.append('\tMaximum: {}'.format(format_currency(price * float(volume), currency)))
+        price_for_one = price
+        maximum = price * float(volume)
     else:
-        output.append('\tPrice for 1: {}'.format(format_currency(price * multiplier, 'USD')))
-        output.append('\tMaximum: {}'.format(format_currency(multiplier * float(volume), 'USD')))
+        price_for_one = price * multiplier
+        maximum = multiplier * float(volume)
+        currency = 'USD'
+    try:
+        if maximum < CONFIG['minimum_sale'][currency.lower()]:
+            return []
+    except KeyError:
+        pass
+    output.append('\tPrice for 1: {}'.format(format_currency(price_for_one, currency)))
+    output.append('\tMaximum: {}'.format(format_currency(maximum, currency)))
     output.append('\tDistance from market: {:.2f}%'.format(distance_from_market_percent))
     output.append('\tAge: {}'.format(age))
     send_notification(output, offer['offer_id'], offer['payment_method'], distance_from_market_percent, sale)
