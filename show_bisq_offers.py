@@ -26,6 +26,8 @@ For "Sells", a negative market distance means the offer is to sell at less than 
 For "Buys", a negative market distance means the offer is to buy at greater than the market price. \
 This means that a negative (or low) distance is generally a good deal for both types.
 
+Current BTC, LTC, and ETH price comes from coinbase.com. Current DCR price comes from coinmarketcap.com.
+
 Code for this tool is available at: https://github.com/valankar/arviraj
 A Twitter bot with good offers is available at: https://twitter.com/BisqArviraj
 
